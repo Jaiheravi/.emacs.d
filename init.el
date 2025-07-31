@@ -40,15 +40,6 @@
 
 (use-package magit)
 
-;; Projects
-(use-package projectile
-  :config
-  (projectile-mode 1)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
-
-;; Documents
-(use-package markdown-mode)
-
 ;; OCaml
 (use-package merlin-company)
 (use-package tuareg
