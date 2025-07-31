@@ -24,39 +24,47 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+;; Use use-package with straight.el
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default 1)
+
 ;; Display the undo tree
-(straight-use-package 'vundo)
-(setq vundo-glyph-alist vundo-unicode-symbols)
+(use-package vundo
+  :config
+  (setq vundo-glyph-alist vundo-unicode-symbols))
 
 ;; Autocompletion
-(straight-use-package 'company)
-(add-hook 'after-init-hook 'global-company-mode)
+(use-package company
+  :config
+  (add-hook 'after-init-hook 'global-company-mode))
 
-;; Elixir setup
-(straight-use-package 'elixir-mode)
-(require 'eglot)
-(add-hook 'elixir-mode-hook 'eglot-ensure)
-(add-to-list 'eglot-server-programs '(elixir-mode "~/.emacs.d/elixir-ls/release/language_server.sh"))
+(use-package magit)
 
-(straight-use-package 'markdown-mode)
+;; Projects
+(use-package projectile
+  :config
+  (projectile-mode 1)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
-(setq flymake-fringe-indicator-position 'left-fringe)
-(setq flymake-error-bitmap '(exclamation-mark error))
-(setq eglot-workspace-configuration
-      '(:elixirLS (:projectDir (:root-uri))))
-(setq eglot-workspace-configuration
-      '(:elixirLS (:dialyzerEnabled t)))
+;; Documents
+(use-package markdown-mode)
 
-(straight-use-package 'projectile)
-(projectile-mode 1)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+;; OCaml
+(use-package merlin-company)
+(use-package tuareg
+  :config
+  (add-hook 'tuareg-mode-hook #'merlin-mode))
+
+
+
+
+
 
 ;; =============================================================================
 ;; General settings
 
 ;; Hide menu bar
 (menu-bar-mode -1)
-
 
 ;; Ask for Y or N instead of Yes or No
 (defalias 'yes-or-no-p 'y-or-n-p)
