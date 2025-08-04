@@ -1,6 +1,14 @@
+;; ==================================================
+;; Priority settings
+
+;; Prevent package.el loading packages prior to their init-file loading
+;; This is a recommendation from the documentation of straight.el
+(setq package-enable-at-startup nil)
+
 ;; Don't show a startup creen
 (setq inhibit-startup-screen t)
 
+;; Avoid having backup and autosave files everywhere
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/" t)))
 
@@ -33,23 +41,37 @@
   :config
   (setq vundo-glyph-alist vundo-unicode-symbols))
 
-;; Autocompletion
-(use-package company
-  :config
-  (add-hook 'after-init-hook 'global-company-mode))
-
+;; Version Control
 (use-package magit)
 
-;; OCaml
-(use-package merlin-company)
+;; Syntax checking
+(use-package flycheck)
+
+;; Simultaneous editing of occurences
+(use-package iedit)
+
+;; ========== Start OCaml ==========
+
 (use-package tuareg
+  :mode
+  (("\\.ocamlinit\\'" . tuareg-mode)))
+
+(use-package dune)
+
+(use-package merlin
+  :hook (tuareg-mode . merlin-mode)
   :config
-  (add-hook 'tuareg-mode-hook #'merlin-mode))
+  (setq merlin-error-after-save nil)
+  (set-face-background 'merlin-eldoc-occurrences-face "#EDEECF"))
 
+(use-package merlin-eldoc
+  :hook (tuareg-mode . merlin-eldoc-setup))
 
+(use-package flycheck-ocaml
+  :config
+  (flycheck-ocaml-setup))
 
-
-
+;; ========== End OCaml ==========
 
 ;; =============================================================================
 ;; General settings
@@ -65,7 +87,7 @@
 
 ;; Display line numbers
 (global-display-line-numbers-mode 1)
-(setq display-line-numbers-type 'relative)
+
 
 ;; Display column numbers
 (setq column-number-mode t)
@@ -74,12 +96,16 @@
 (electric-pair-mode)
 
 ;; Color customizations
-(set-face-background 'mode-line "#F3F1E5")
-(set-face-background 'mode-line-inactive "#FEFCF0")
+(set-face-background 'mode-line "#E6E4D9")
+(set-face-foreground 'mode-line "#575653")
+(set-face-background 'mode-line-inactive "#F2F0E5")
+(set-face-foreground 'mode-line-inactive "#6F6E69")
 (set-face-background 'show-paren-match "#FEFCF0")
 (set-face-foreground 'show-paren-match "#E58C8A")
 (set-face-foreground 'line-number-current-line "#E58C8A")
 (set-face-foreground 'line-number "#D5D2C1")
+(set-face-background 'iedit-occurrence "#E1ECEB")
+(set-face-background 'region "#FAEEC6")
 
 ;; Make sure there is always a new line at the end of the file
 (setq require-final-newline t)
@@ -90,11 +116,6 @@
 ;; Remove the dash separator in the mode line
 (setq-default mode-line-end-spaces "")
 
-;; Enable autocompletion
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode 1)
-
 ;; Duplicate line
 (defun duplicate-line ()
   "Duplicate current line."
@@ -104,15 +125,12 @@
     (newline)
     (insert line)))
 
-
 ;; ==================================================
 ;; Functions
-
 
 (defun metaverso-beginning-of-line ()
   "Toggle between the first non-whitespace character and the beginning of the line"
   (interactive)
-
   (let ((orig-point (point)))
     (back-to-indentation)
     (when (= orig-point (point))
@@ -145,9 +163,6 @@
     (insert (shell-command-to-string "pbpaste"))
     )
   )
-
-
-
 
 ;; ==================================================
 ;; Keybindings
