@@ -50,7 +50,7 @@
 ;; Simultaneous editing of occurences
 (use-package iedit)
 
-;; ========== Start OCaml ==========
+;; ========== Start OCaml Settings  ==========
 
 (use-package tuareg
   :mode
@@ -61,17 +61,18 @@
 (use-package merlin
   :hook (tuareg-mode . merlin-mode)
   :config
-  (setq merlin-error-after-save nil)
-  (set-face-background 'merlin-eldoc-occurrences-face "#EDEECF"))
+  (setq merlin-error-after-save nil))
 
 (use-package merlin-eldoc
-  :hook (tuareg-mode . merlin-eldoc-setup))
+  :hook (tuareg-mode . merlin-eldoc-setup)
+  :config
+  (set-face-background 'merlin-eldoc-occurrences-face "#EDEECF"))
 
 (use-package flycheck-ocaml
   :config
   (flycheck-ocaml-setup))
 
-;; ========== End OCaml ==========
+;; ========== End OCaml Settings ==========
 
 ;; =============================================================================
 ;; General settings
@@ -87,7 +88,7 @@
 
 ;; Display line numbers
 (global-display-line-numbers-mode 1)
-
+(setq display-line-numbers-type 'relative)
 
 ;; Display column numbers
 (setq column-number-mode t)

@@ -1,4 +1,5 @@
 .DS_Store
+.init*
 auto-save-list
 autosaves
 backups
