@@ -68,8 +68,11 @@
           (lambda ()
             (setq flyspell-generic-check-word-predicate #'my-flyspell-skip-hex-colors)))
 
+;; TODO: In Lisps, enable flyspell only on comments and strings, and not all the words inside a s-expression
+;;  http://xahlee.info/emacs/emacs/elisp_thing-at-point.html
+
 ;; --------------------------------------------------
-;; OCaml Setup
+;; OCaml
 
 (use-package tuareg
   :mode
@@ -92,6 +95,10 @@
 (use-package geiser-chez
   :config
   (setq geiser-chez-binary "chez"))
+
+;; --------------------------------------------------
+;; Clojure
+(use-package cider)
 
 ;; ================================================================================
 ;; Custom functions
