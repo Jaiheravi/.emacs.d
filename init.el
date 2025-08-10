@@ -1,6 +1,10 @@
 ;; Prevent package.el loading packages prior to their init-file loading
-;; This is a recommendation from the documentation of straight.el
+;;   This is a recommendation from the documentation of straight.el
 (setq package-enable-at-startup nil)
+
+;; Remove code highlighting
+;;   This must be located here so we can overwrite it as necessary
+;; (global-font-lock-mode -1)
 
 ;; ================================================================================
 ;; Packages
@@ -34,11 +38,39 @@
 ;; Version Control
 (use-package magit)
 
-;; Syntax checking
-(use-package flycheck)
+;; Simultaneous editing of occurrences
+(use-package iedit
+  :config
+  (set-face-background 'iedit-occurrence "#E1ECEB"))
 
-;; Simultaneous editing of occurences
-(use-package iedit)
+;; Enable code checking
+(use-package flycheck
+  :init
+  (global-flycheck-mode)
+  :custom
+  (flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc)))
+
+;; Check OCaml code
+(use-package flycheck-ocaml
+  :after flycheck
+  :config
+  (flycheck-ocaml-setup))
+
+;; Spell check for natural languages
+(setq ispell-local-dictionary "en_US")
+(add-hook 'text-mode-hook #'flyspell-mode)
+(add-hook 'prog-mode-hook #'flyspell-prog-mode)
+
+;; Don't spell check hex colors
+(defun my-flyspell-skip-hex-colors ()
+  "Predicate to skip hexadecimal color codes during spell-checking."
+  (let ((word (thing-at-point 'word t)))
+    (not (and word
+              (string-match-p "\\`[0-9A-Fa-f]\\{3,6\\}\\'" word)))))
+
+(add-hook 'flyspell-mode-hook
+          (lambda ()
+            (setq flyspell-generic-check-word-predicate #'my-flyspell-skip-hex-colors)))
 
 ;; --------------------------------------------------
 ;; OCaml Setup
@@ -59,12 +91,9 @@
   :config
   (set-face-background 'merlin-eldoc-occurrences-face "#EDEECF"))
 
-(use-package flycheck-ocaml
-  :config
-  (flycheck-ocaml-setup))
 
 ;; --------------------------------------------------
-;; Scheme setup
+;; Scheme
 
 (use-package paredit
   :hook (emacs-lisp-mode       . paredit-mode)
@@ -88,7 +117,7 @@
     (insert line)))
 
 (defun custom-beginning-of-line ()
- "Toggle between the first non-whitespace character and the beginning of the line"
+ "Toggle between the first non-whitespace character and the beginning of the line."
  (interactive)
  (let ((orig-point (point)))
    (back-to-indentation)
@@ -126,7 +155,7 @@
 ;; =============================================================================
 ;; General settings
 
-;; Don't show a startup creen
+;; Don't show a startup screen
 (setq inhibit-startup-screen t)
 
 ;; Avoid having backup and autosave files everywhere
@@ -148,9 +177,6 @@
 ;; Ask for Y or N instead of Yes or No
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; Remove code highlighting
-(global-font-lock-mode -1)
-
 ;; Display line numbers
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
@@ -161,17 +187,55 @@
 ;; Insert matching delimiters
 (electric-pair-mode)
 
-;; Color customizations
-(set-face-background 'mode-line "#E6E4D9")
-(set-face-foreground 'mode-line "#575653")
-(set-face-background 'mode-line-inactive "#F2F0E5")
-(set-face-foreground 'mode-line-inactive "#6F6E69")
-(set-face-background 'show-paren-match "#FEFCF0")
-(set-face-foreground 'show-paren-match "#E58C8A")
-(set-face-foreground 'line-number-current-line "#E58C8A")
-(set-face-foreground 'line-number "#D5D2C1")
-(set-face-background 'iedit-occurrence "#E1ECEB")
-(set-face-background 'region "#FAEEC6")
+;; Enable auto-completion
+(global-completion-preview-mode 1)
+
+;; ================================================================================
+;; Color customization
+;;   Palette from https://github.com/kepano/flexoki
+
+(defvar flexoki-base-50 "#F2F0E5")
+(defvar flexoki-base-100 "#E6E4D9")
+(defvar flexoki-base-150 "#DAD8CE")
+(defvar flexoki-base-200 "#CECDC3")
+(defvar flexoki-base-300 "#B7B5A9")
+(defvar flexoki-base-400 "#9F9D96")
+(defvar flexoki-base-500 "#878580")
+(defvar flexoki-base-600 "#6F6E69")
+(defvar flexoki-base-700 "#575653")
+(defvar flexoki-base-800 "#403E3C")
+(defvar flexoki-black "#100F0F")
+(defvar flexoki-red-300 "#E8705F")
+(defvar flexoki-yellow-50 "#FAEEC6")
+
+;; Global UI
+(set-face-background 'mode-line flexoki-base-50)
+(set-face-foreground 'mode-line flexoki-base-800)
+(set-face-background 'mode-line-inactive flexoki-base-50)
+(set-face-foreground 'mode-line-inactive flexoki-base-400)
+(set-face-background 'show-paren-match nil)
+(set-face-foreground 'show-paren-match flexoki-red-300)
+(set-face-foreground 'line-number flexoki-base-200)
+(set-face-foreground 'line-number-current-line flexoki-red-300)
+(set-face-background 'region flexoki-yellow-50)
+
+;; Global syntax highlighting
+(set-face-attribute 'font-lock-function-name-face nil :foreground flexoki-black)
+(set-face-attribute 'font-lock-function-call-face nil :foreground flexoki-black)
+(set-face-attribute 'font-lock-variable-name-face nil :foreground flexoki-black)
+(set-face-attribute 'font-lock-variable-use-face nil :foreground flexoki-black)
+(set-face-attribute 'font-lock-keyword-face nil :foreground flexoki-black)
+(set-face-attribute 'font-lock-comment-face nil :foreground flexoki-base-500 :slant 'italic)
+(set-face-attribute 'font-lock-type-face nil :foreground flexoki-black)
+(set-face-attribute 'font-lock-constant-face nil :foreground flexoki-black)
+(set-face-attribute 'font-lock-builtin-face nil :foreground flexoki-black)
+(set-face-attribute 'font-lock-string-face nil :foreground flexoki-base-600 :slant 'italic)
+(set-face-attribute 'font-lock-number-face nil :foreground flexoki-base-600)
+(set-face-attribute 'font-lock-operator-face nil :foreground flexoki-base-600 :weight 'light)
+(set-face-attribute 'font-lock-punctuation-face nil :foreground flexoki-base-500)
+(set-face-attribute 'font-lock-bracket-face nil :foreground flexoki-base-500)
+(set-face-attribute 'font-lock-delimiter-face nil :foreground flexoki-base-500)
+
 
 ;; ==================================================
 ;; Keybindings
