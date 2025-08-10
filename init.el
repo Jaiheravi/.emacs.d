@@ -2,10 +2,6 @@
 ;;   This is a recommendation from the documentation of straight.el
 (setq package-enable-at-startup nil)
 
-;; Remove code highlighting
-;;   This must be located here so we can overwrite it as necessary
-;; (global-font-lock-mode -1)
-
 ;; ================================================================================
 ;; Packages
 
@@ -91,18 +87,11 @@
   :config
   (set-face-background 'merlin-eldoc-occurrences-face "#EDEECF"))
 
-
 ;; --------------------------------------------------
-;; Scheme
-
-(use-package paredit
-  :hook (emacs-lisp-mode       . paredit-mode)
-  :hook (eval-expression-minibuffer-setup . paredit-mode)
-  :hook (ielm-mode             . paredit-mode)
-  :hook (lisp-mode             . paredit-mode)
-  :hook (lisp-interaction-mode . paredit-mode)
-  :hook (scheme-mode           . paredit-mode))
-
+;; Scheme (Chez Scheme)
+(use-package geiser-chez
+  :config
+  (setq geiser-chez-binary "chez"))
 
 ;; ================================================================================
 ;; Custom functions
@@ -184,11 +173,11 @@
 ;; Display column numbers
 (setq column-number-mode t)
 
-;; Insert matching delimiters
-(electric-pair-mode)
-
 ;; Enable auto-completion
 (global-completion-preview-mode 1)
+
+;; Match delimiters
+(electric-pair-mode)
 
 ;; ================================================================================
 ;; Color customization
