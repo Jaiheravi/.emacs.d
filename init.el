@@ -272,15 +272,13 @@
   (if (display-graphic-p)
       (progn
 	(message "Yanked region to x-clipboard!")
-	(call-interactively 'clipboard-kill-ring-save)
-	)
+	(call-interactively 'clipboard-kill-ring-save))
     (if (region-active-p)
 	(progn
 	  (shell-command-on-region (region-beginning) (region-end) "pbcopy")
 	  (message "Yanked region to clipboard!")
 	  (deactivate-mark))
-      (message "No region active; can't yank to clipboard!")))
-  )
+      (message "No region active; can't yank to clipboard!"))))
 
 (defun paste-from-clipboard ()
   "Pastes from x-clipboard."
@@ -288,11 +286,8 @@
   (if (display-graphic-p)
       (progn
 	(clipboard-yank)
-	(message "graphics active")
-	)
-    (insert (shell-command-to-string "pbpaste"))
-    )
-  )
+	(message "graphics active"))
+    (insert (shell-command-to-string "pbpaste"))))
 
 ;; =============================================================================
 ;; General settings
