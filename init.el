@@ -217,6 +217,10 @@
 ;; TODO: In Lisps, enable flyspell only on comments and strings, and not all the words inside an s-expression
 ;;  http://xahlee.info/emacs/emacs/elisp_thing-at-point.html
 
+;; Show which keybindings are available after a prefix like C-x
+(setq which-key-separator " → " )
+(which-key-mode)
+
 ;; --------------------------------------------------
 ;; OCaml
 
