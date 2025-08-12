@@ -217,9 +217,40 @@
 ;; TODO: In Lisps, enable flyspell only on comments and strings, and not all the words inside an s-expression
 ;;  http://xahlee.info/emacs/emacs/elisp_thing-at-point.html
 
-;; Show which keybindings are available after a prefix like C-x
+;; Show what keybindings are available after a prefix like C-x or C-c.
 (setq which-key-separator " → " )
-(which-key-mode)
+(setq which-key-max-display-columns 1) ; We need a single column to have space for the symbol description
+(setq which-key-popup-type 'side-window)
+(setq which-key-side-window-location 'bottom)
+(setq which-key-side-window-max-width 0.75)
+(setq which-key-max-description-length 0.9)
+(setq which-key-show-docstrings t)
+(which-key-mode t)
+;; Show a description of each symbol
+;; (add-hook 'which-key-mode-hook 'which-key-toggle-docstrings)
+
+;; Show what functions are available on M-x
+(use-package vertico
+  :init
+  (vertico-mode))
+
+;; Show function descriptions
+(use-package marginalia
+  :init
+  (marginalia-mode))
+
+;; Persist history over Emacs restarts.
+;; - Vertico sorts by history position.
+(use-package savehist
+  :init
+  (savehist-mode))
+
+;; Enable finding functions, variables, etc. Without being precise in the spelling.
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (orderless-completion-category-overrides '((file (styles basic partial-completion))))
+  (setq orderless-matching-styles '(orderless-flex)))
 
 ;; --------------------------------------------------
 ;; OCaml
@@ -325,14 +356,14 @@
 ;; Display column numbers
 (setq column-number-mode t)
 
-;; Enable auto-completion
-(global-completion-preview-mode)
-(setq ido-enable-flex-matching t)
-(setq ido-use-url-at-point t)
-(setq ido-case-fold t)
-(setq ido-everywhere t)
-(setq ido-use-faces t)
-(ido-mode t)
+;; Enable auto-completion for code and text
+(global-completion-preview-mode) ; Auto-completes text
+;; (setq ido-enable-flex-matching t) ; IDO seems to autocomplete only commands but in a strict way
+;; (setq ido-use-url-at-point t)
+;; (setq ido-case-fold t)
+;; (setq ido-everywhere t)
+;; (setq ido-use-faces t)
+;; (ido-mode t)
 
 ;; Match delimiters
 (electric-pair-mode)
@@ -382,11 +413,11 @@
 (set-face-background 'region flexoki-yellow-50)
 
 ;; IDO
-(set-face-foreground 'ido-subdir flexoki-blue-400)
-(set-face-foreground 'ido-first-match flexoki-green-400)
-(set-face-foreground 'ido-only-match flexoki-green-400)
-(set-face-background 'ido-indicator flexoki-red-50)
-(set-face-foreground 'ido-indicator flexoki-black)
+;; (set-face-foreground 'ido-subdir flexoki-blue-400)
+;; (set-face-foreground 'ido-first-match flexoki-green-400)
+;; (set-face-foreground 'ido-only-match flexoki-green-400)
+;; (set-face-background 'ido-indicator flexoki-red-50)
+;; (set-face-foreground 'ido-indicator flexoki-black)
 
 ;; Syntax highlighting
 (set-face-attribute 'font-lock-function-name-face nil :foreground flexoki-black)
