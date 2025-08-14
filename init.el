@@ -194,28 +194,21 @@
   :config
   (flycheck-ocaml-setup))
 
-;; Spell check for natural languages
-(setq ispell-program-name "hunspell")
-(add-hook 'text-mode-hook #'flyspell-mode)
-(add-hook 'prog-mode-hook #'flyspell-prog-mode)
+;; Spell check for natural language
+(use-package spell-fu
+  :config
+  (spell-fu-global-mode)
+  :init
+  (add-hook 'spell-fu-mode-hook
+	    (lambda ()
+	      (spell-fu-dictionary-add
+	       (spell-fu-get-personal-dictionary "en_tech" "~/Library/Spelling/en_tech.pws"))
+	      )))
 
-;; Don't spell check hex colors
-(defun my-flyspell-skip-hex-colors ()
-  "Predicate to skip hexadecimal color codes during spell-checking."
-  (let ((word (thing-at-point 'word t)))
-    (not (and word
-              (string-match-p "\\`[0-9A-Fa-f]\\{3,6\\}\\'" word)))))
-
-(add-hook 'flyspell-mode-hook
-          (lambda ()
-            (setq flyspell-generic-check-word-predicate #'my-flyspell-skip-hex-colors)
-	    (set-face-attribute 'flyspell-duplicate nil :underline `(:color ,flexoki-yellow-150 :style wave))
-	    (set-face-attribute 'flyspell-incorrect nil :underline `(:color ,flexoki-yellow-200 :style wave))
-	    (setq ispell-local-dictionary "en_US,en_tech")
-	    (ispell-hunspell-add-multi-dic "en_US,en_tech")))
-
-;; TODO: In Lisps, enable flyspell only on comments and strings, and not all the words inside an s-expression
-;;  http://xahlee.info/emacs/emacs/elisp_thing-at-point.html
+;; Add custom faces to make spell checking less prominent
+(add-hook 'spell-fu-mode-hook
+	  (lambda ()
+	    (set-face-attribute 'spell-fu-incorrect-face nil :underline `(:color ,flexoki-yellow-200 :style wave))))
 
 ;; Show what keybindings are available after a prefix like C-x or C-c.
 (setq which-key-separator " → " )
@@ -377,11 +370,9 @@
 ;; (ido-mode t)
 
 ;; Match delimiters
-;; (setq electric-pair-preserve-balance t)
-;; (setq electric-pair-delete-adjacent-pairs t)
-;; (electric-pair-mode)
-(use-package paredit)
-(add-hook 'prog-mode-hook 'enable-paredit-mode)
+(setq electric-pair-preserve-balance t)
+(setq electric-pair-delete-adjacent-pairs t)
+(electric-pair-mode)
 
 ;; ================================================================================
 ;; Color customization
