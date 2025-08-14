@@ -271,6 +271,8 @@
   :config
   (set-face-background 'merlin-eldoc-occurrences-face "#EDEECF"))
 
+(use-package merlin-iedit)
+
 ;; --------------------------------------------------
 ;; Scheme (Chez Scheme)
 (use-package geiser-chez
@@ -279,7 +281,16 @@
 
 ;; --------------------------------------------------
 ;; Clojure
-(use-package cider)
+(use-package cider
+  :hook (clojure-mode . cider-mode))
+
+;; --------------------------------------------------
+;; R (Programming Language)
+(use-package ess)
+
+;; --------------------------------------------------
+;; Haskell
+(use-package haskell-mode)
 
 ;; ================================================================================
 ;; Custom functions
@@ -366,7 +377,11 @@
 ;; (ido-mode t)
 
 ;; Match delimiters
-(electric-pair-mode)
+;; (setq electric-pair-preserve-balance t)
+;; (setq electric-pair-delete-adjacent-pairs t)
+;; (electric-pair-mode)
+(use-package paredit)
+(add-hook 'prog-mode-hook 'enable-paredit-mode)
 
 ;; ================================================================================
 ;; Color customization
