@@ -248,22 +248,27 @@
 ;; --------------------------------------------------
 ;; OCaml
 
+;; Language support
 (use-package tuareg
   :mode
   (("\\.ocamlinit\\'" . tuareg-mode)))
 
+;; Build system for OCaml
 (use-package dune)
 
+;; Context sensitive completion
 (use-package merlin
   :hook (tuareg-mode . merlin-mode)
   :config
   (setq merlin-error-after-save nil))
 
+;; Documentation backed by Merlin
 (use-package merlin-eldoc
   :hook (tuareg-mode . merlin-eldoc-setup)
   :config
   (set-face-background 'merlin-eldoc-occurrences-face "#EDEECF"))
 
+;; Edit identifiers simultaneously
 (use-package merlin-iedit)
 
 ;; --------------------------------------------------
@@ -284,6 +289,37 @@
 ;; --------------------------------------------------
 ;; Haskell
 (use-package haskell-mode)
+
+;; --------------------------------------------------
+;; TypeScript
+;; Note: Make sure to "npm install -g typescript-language-server typescript"
+;; I don't know if this is the correct way to set things up, I won't be coding in TypeScript for long, though.
+
+;; I'm still dubious about LSP, but here we go
+;; This is required by Deno
+;; (use-package lsp-mode
+;;   :hook ((typescript-ts-mode . lsp)
+;; 	 (tsx-ts-mode . lsp))
+;;   :commands lsp)
+
+;; (setq lsp-enabled-clients '(deno-ls))
+
+;; ;; This tells Emacs where to find grammars
+;; ;; Run treesit-install-language-grammar to select one of these grammars to install
+;; (setq treesit-language-source-alist
+;;       '((css "https://github.com/tree-sitter/tree-sitter-css")
+;; 	(html "https://github.com/tree-sitter/tree-sitter-html")
+;; 	(javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+;; 	(json "https://github.com/tree-sitter/tree-sitter-json")
+;; 	(typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+;; 	(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+;; 	))
+
+;; (setq major-mode-remap-alist
+;;       '((typescript-mode . typescript-ts-mode)))
+
+;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+;; (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 
 ;; ================================================================================
 ;; Custom functions

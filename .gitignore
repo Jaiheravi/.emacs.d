@@ -8,3 +8,6 @@ transient
 eshell
 history
 spell-fu
+.lsp-*
+projects
+tree-sitter
