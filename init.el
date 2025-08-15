@@ -188,12 +188,6 @@
   :custom
   (flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc)))
 
-;; Check OCaml code
-(use-package flycheck-ocaml
-  :after flycheck
-  :config
-  (flycheck-ocaml-setup))
-
 ;; Spell check for natural language
 (use-package spell-fu
   :config
@@ -253,6 +247,12 @@
   :mode
   (("\\.ocamlinit\\'" . tuareg-mode)))
 
+;; Check OCaml code
+(use-package flycheck-ocaml
+  :after flycheck
+  :config
+  (flycheck-ocaml-setup))
+
 ;; Build system for OCaml
 (use-package dune)
 
@@ -270,6 +270,13 @@
 
 ;; Edit identifiers simultaneously
 (use-package merlin-iedit)
+
+;; Use the opam installed utop
+(setq utop-command "opam exec -- utop -emacs")
+
+;; Interactive Read-Eval-Print Loop
+(use-package utop)
+(add-hook 'tuareg-mode-hook 'utop-minor-mode)
 
 ;; --------------------------------------------------
 ;; Scheme (Chez Scheme)
@@ -398,7 +405,7 @@
 
 ;; Enable auto-completion for code and text
 (global-completion-preview-mode) ; Auto-completes text
-;; (setq ido-enable-flex-matching t) ; IDO seems to autocomplete only commands but in a strict way
+;; (setq ido-enable-flex-matching t) ; IDO seems to auto-complete only commands but in a strict way
 ;; (setq ido-use-url-at-point t)
 ;; (setq ido-case-fold t)
 ;; (setq ido-everywhere t)

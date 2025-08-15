@@ -11,3 +11,5 @@ spell-fu
 .lsp-*
 projects
 tree-sitter
+tests
+tramp
