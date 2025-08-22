@@ -317,6 +317,10 @@
 (use-package go-mode)
 
 ;; --------------------------------------------------
+;; D
+(use-package d-mode)
+
+;; --------------------------------------------------
 ;; Fortran
 
 ;; --------------------------------------------------
@@ -419,6 +423,11 @@
 
 ;; =============================================================================
 ;; General settings
+
+;; Keep buffers in sync with file changes
+(global-auto-revert-mode t)
+;; Keep buffers in sync with directory changes
+(setq global-auto-revert-non-file-buffers t)
 
 ;; Don't show a startup screen
 (setq inhibit-startup-screen t)
