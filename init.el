@@ -200,6 +200,9 @@
 	       (spell-fu-get-personal-dictionary "en_tech" "~/Library/Spelling/en_tech.pws"))
 	      )))
 
+;; Disable spell-checking on Dired
+(add-hook 'dired-mode-hook (lambda () (spell-fu-mode -1)))
+
 ;; Make the spelling errors less prominent
 (add-hook 'spell-fu-mode-hook
 	  (lambda ()
@@ -348,35 +351,54 @@
 ;; Smalltalk
 
 ;; --------------------------------------------------
-;; TypeScript
-;; Note: Make sure to "npm install -g typescript-language-server typescript"
-;; I don't know if this is the correct way to set things up, I won't be coding in TypeScript for long, though.
-
-;; I'm still dubious about LSP, but here we go
-;; This is required by Deno
-;; (use-package lsp-mode
-;;   :hook ((typescript-ts-mode . lsp)
-;; 	 (tsx-ts-mode . lsp))
-;;   :commands lsp)
-
-;; (setq lsp-enabled-clients '(deno-ls))
+;; Typescript
 
 ;; ;; This tells Emacs where to find grammars
-;; ;; Run treesit-install-language-grammar to select one of these grammars to install
-;; (setq treesit-language-source-alist
-;;       '((css "https://github.com/tree-sitter/tree-sitter-css")
-;; 	(html "https://github.com/tree-sitter/tree-sitter-html")
-;; 	(javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-;; 	(json "https://github.com/tree-sitter/tree-sitter-json")
-;; 	(typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-;; 	(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-;; 	))
+;; ;; Run M-x treesit-install-language-grammar to install the TypeScript tree-sitter grammar
+(setq treesit-language-source-alist
+      '((typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+	(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+	(css "https://github.com/tree-sitter/tree-sitter-css")
+ 	(html "https://github.com/tree-sitter/tree-sitter-html")
+	(javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+	(json "https://github.com/tree-sitter/tree-sitter-json")
+	))
 
-;; (setq major-mode-remap-alist
-;;       '((typescript-mode . typescript-ts-mode)))
+;; Remap typescript-mode with typescript-ts-mode
+(setq major-mode-remap-alist
+      '((typescript-mode . typescript-ts-mode)
+      (css-mode . css-ts-mode)
+      (html-mode . html-ts-mode)
+      (javascript-mode . javascript-ts-mode)))
 
-;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
-;; (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+;; Associate file type with typescript-ts-mode
+(add-to-list 'auto-mode-alist '(
+				("\\.ts\\'" . typescript-ts-mode)
+				("\\.css\\'" . css-ts-mode)
+				("\\.html\\'" . html-ts-mode)
+				("\\.js\\'" . javascript-ts-mode)
+				("\\.json\\'" . json-ts-mode)))
+
+;; (add-to-list 'auto-mode-alist '(("\\.js\\'" . javascript-ts-mode)))
+
+;; LSP stuff
+(use-package lsp-mode
+  :hook ((typescript-ts-mode . lsp-deferred)
+	 (tsx-ts-mode . lsp-deferred)
+	 (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp
+  :config
+  (setq lsp-headerline-breadcrumb-enable nil))
+
+
+
+(setq major-mode-remap-alist
+      '((typescript-mode . typescript-ts-mode)))
+
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+
+(setq lsp-enabled-clients '(deno-ls))
 
 ;; ================================================================================
 ;; Custom functions
@@ -424,6 +446,16 @@
 ;; =============================================================================
 ;; General settings
 
+;; Show recent files when invoking find-file
+(recentf-mode 1)
+
+;; Enable ANSI colors when using compile mode
+(add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
+
+;; Auto-scroll when something repeatedly in the compile mode
+(with-eval-after-load 'compile
+  (setq compilation-scroll-output t))
+
 ;; Keep buffers in sync with file changes
 (global-auto-revert-mode t)
 ;; Keep buffers in sync with directory changes
@@ -459,13 +491,7 @@
 (setq column-number-mode t)
 
 ;; Enable auto-completion for code and text
-(global-completion-preview-mode) ; Auto-completes text
-;; (setq ido-enable-flex-matching t) ; IDO seems to auto-complete only commands but in a strict way
-;; (setq ido-use-url-at-point t)
-;; (setq ido-case-fold t)
-;; (setq ido-everywhere t)
-;; (setq ido-use-faces t)
-;; (ido-mode t)
+(global-completion-preview-mode)
 
 ;; Match delimiters
 (setq electric-pair-preserve-balance t)
@@ -544,6 +570,9 @@
 ;; ==================================================
 ;; Keybindings
 
+;; Avoid the the mistake of calling "C-x C-b" instead of "C-x b"
+(global-unset-key (kbd "C-x C-b"))
+
 ;; Redefine core keybindings
 (define-key global-map (kbd "C-a") '("Go to beginning of line" . custom-beginning-of-line))
 
@@ -552,3 +581,4 @@
 (define-key global-map (kbd "C-c v") '("Paste from clipboard" . paste-from-clipboard))
 (define-key global-map (kbd "C-x u") '("Display undo tree" . vundo))
 (define-key global-map (kbd "C-c d") '("Duplicate line" . duplicate-line))
+(define-key global-map (kbd "C-x C-r") '("Open recent file" . recentf-open))
