@@ -168,6 +168,51 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default 1)
 
+;; Tree-sitter Language Grammars
+;; Run M-x treesit-install-language-grammar to install the grammars listed here
+(setq treesit-language-source-alist
+      '(
+
+        (css . ("https://github.com/tree-sitter/tree-sitter-css"))
+
+
+        (html . ("https://github.com/tree-sitter/tree-sitter-html"))
+        (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
+        (json . ("https://github.com/tree-sitter/tree-sitter-json"))
+
+
+
+        (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
+
+
+
+        (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
+        ))
+
+(defun trim-leading-whitespace ()
+  "Delete all leading whitespace from lines that start with it in the current buffer."
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "^[ \t]+" nil t)
+    (replace-match "" nil nil)))
+
+;; Replace modes with Tree-sitter modes
+(setq major-mode-remap-alist
+      '((typescript-mode . typescript-ts-mode)
+      (css-mode . css-ts-mode)
+      (html-mode . html-ts-mode)
+      (javascript-mode . javascript-ts-mode)))
+
+;; Associate file type with typescript-ts-mode
+(add-to-list 'auto-mode-alist '(
+				("\\.ts\\'" . typescript-ts-mode)
+				("\\.css\\'" . css-ts-mode)
+				("\\.html\\'" . html-ts-mode)
+				("\\.js\\'" . javascript-ts-mode)
+				("\\.json\\'" . json-ts-mode)))
+
+;; (add-to-list 'auto-mode-alist '(("\\.js\\'" . javascript-ts-mode)))
+
 ;; Display the undo tree
 (use-package vundo
   :config
@@ -353,33 +398,6 @@
 ;; --------------------------------------------------
 ;; Typescript
 
-;; ;; This tells Emacs where to find grammars
-;; ;; Run M-x treesit-install-language-grammar to install the TypeScript tree-sitter grammar
-(setq treesit-language-source-alist
-      '((typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-	(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-	(css "https://github.com/tree-sitter/tree-sitter-css")
- 	(html "https://github.com/tree-sitter/tree-sitter-html")
-	(javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-	(json "https://github.com/tree-sitter/tree-sitter-json")
-	))
-
-;; Remap typescript-mode with typescript-ts-mode
-(setq major-mode-remap-alist
-      '((typescript-mode . typescript-ts-mode)
-      (css-mode . css-ts-mode)
-      (html-mode . html-ts-mode)
-      (javascript-mode . javascript-ts-mode)))
-
-;; Associate file type with typescript-ts-mode
-(add-to-list 'auto-mode-alist '(
-				("\\.ts\\'" . typescript-ts-mode)
-				("\\.css\\'" . css-ts-mode)
-				("\\.html\\'" . html-ts-mode)
-				("\\.js\\'" . javascript-ts-mode)
-				("\\.json\\'" . json-ts-mode)))
-
-;; (add-to-list 'auto-mode-alist '(("\\.js\\'" . javascript-ts-mode)))
 
 ;; LSP stuff
 (use-package lsp-mode
