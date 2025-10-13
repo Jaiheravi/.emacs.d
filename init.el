@@ -168,6 +168,9 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default 1)
 
+;; Allows to use :diminish in use-package to hide modes in the modeline
+(use-package diminish)
+
 ;; Tree-sitter Language Grammars
 ;; Run M-x treesit-install-language-grammar to install the grammars listed here
 (setq treesit-language-source-alist
@@ -273,11 +276,13 @@
 
 ;; .editorconfig file support
 (use-package editorconfig
+  :diminish
   :config
   (editorconfig-mode +1))
 
 ;; Display current match number and total matches when searching text
 (use-package anzu
+  :diminish
   :config
   (global-anzu-mode t))
 
@@ -434,6 +439,14 @@
 ;; =============================================================================
 ;; General settings
 
+;; Never use tabs for indentation
+(setq-default indent-tabs-mode nil)
+
+;; Always use 2 spaces for indentation
+(setq-default tab-width 2)
+(setq-default standard-indent 2)
+(setq-default c-basic-offset 2)
+
 ;; Show recent files when invoking find-file
 (recentf-mode 1)
 
@@ -480,6 +493,11 @@
 
 ;; Enable auto-completion for code and text
 (global-completion-preview-mode)
+(diminish 'completion-preview-mode)
+(diminish 'eldoc-mode)
+(diminish 'flycheck-mode)
+(diminish 'which-key-mode)
+(diminish 'lsp-lens-mode)
 
 ;; Match delimiters
 (setq electric-pair-preserve-balance t)
