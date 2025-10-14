@@ -200,6 +200,8 @@
   (setq lsp-headerline-breadcrumb-enable nil)
   (setq warning-suppress-types '((lsp-mode) (lsp-mode))))
 
+// Delay inline suggestions by 2 seconds
+(setq completion-preview-idle-delay 2)
 
 ;; Display the undo tree
 (use-package vundo
@@ -493,6 +495,8 @@
 
 ;; Enable auto-completion for code and text
 (global-completion-preview-mode)
+
+;; Remove mode labels in the modeline
 (diminish 'completion-preview-mode)
 (diminish 'eldoc-mode)
 (diminish 'flycheck-mode)
