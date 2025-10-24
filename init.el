@@ -184,23 +184,25 @@
 ;; Replace modes with Tree-sitter modes
 (setq major-mode-remap-alist
       '((css-mode . css-ts-mode)
-      (html-mode . html-ts-mode)
-      (js-mode . javascript-ts-mode)
-      (json-mode . json-ts-mode)
-      (typescript-mode . typescript-ts-mode)))
+        (web-mode . html-ts-mode)
+        (html-mode . html-ts-mode)
+        (js-mode . javascript-ts-mode)
+        (json-mode . json-ts-mode)
+        (typescript-mode . typescript-ts-mode)))
 
 ;; LSP stuff
 ;; We mainly want this for Typescript
 (use-package lsp-mode
   :hook ((typescript-ts-mode . lsp-deferred)
-	 (tsx-ts-mode . lsp-deferred)
-	 (lsp-mode . lsp-enable-which-key-integration))
+	       (tsx-ts-mode . lsp-deferred)
+         (html-ts-mode . lsp-deferred)
+	       (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :config
   (setq lsp-headerline-breadcrumb-enable nil)
   (setq warning-suppress-types '((lsp-mode) (lsp-mode))))
 
-// Delay inline suggestions by 2 seconds
+;; Delay inline suggestions by 2 seconds
 (setq completion-preview-idle-delay 2)
 
 ;; Display the undo tree
@@ -388,12 +390,13 @@
 ;; Smalltalk
 
 ;; --------------------------------------------------
-;; Typescript / Javascript
+;; Typescript / Javascript and other web stuff
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\'" . html-ts-mode))
 
-(setq lsp-enabled-clients '(deno-ls))
+(setq lsp-enabled-clients '(deno-ls html-ls))
 
 ;; ================================================================================
 ;; Custom functions
