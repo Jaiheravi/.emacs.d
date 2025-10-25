@@ -202,6 +202,8 @@
   (setq lsp-headerline-breadcrumb-enable nil)
   (setq warning-suppress-types '((lsp-mode) (lsp-mode))))
 
+(setq lsp-enabled-clients '(deno-ls html-ls))
+
 ;; Delay inline suggestions by 2 seconds
 (setq completion-preview-idle-delay 2)
 
@@ -395,8 +397,6 @@
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-ts-mode))
-
-(setq lsp-enabled-clients '(deno-ls html-ls))
 
 ;; ================================================================================
 ;; Custom functions
