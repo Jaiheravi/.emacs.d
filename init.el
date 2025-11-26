@@ -173,13 +173,15 @@
 
 ;; Tree-sitter Language Grammars
 ;; Run M-x treesit-install-language-grammar to install the grammars listed here
+(use-package haskell-ts-mode)
 (setq treesit-language-source-alist
       '((css . ("https://github.com/tree-sitter/tree-sitter-css"))
         (html . ("https://github.com/tree-sitter/tree-sitter-html"))
         (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
         (json . ("https://github.com/tree-sitter/tree-sitter-json"))
         (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
-        (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))))
+        (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
+        (haskell . ("https://github.com/tree-sitter/tree-sitter-haskell" "v0.23.1"))))
 
 ;; Replace modes with Tree-sitter modes
 (setq major-mode-remap-alist
@@ -191,18 +193,20 @@
         (typescript-mode . typescript-ts-mode)))
 
 ;; LSP stuff
-;; We mainly want this for Typescript
+(use-package lsp-haskell)
 (use-package lsp-mode
   :hook ((typescript-ts-mode . lsp-deferred)
 	       (tsx-ts-mode . lsp-deferred)
          (html-ts-mode . lsp-deferred)
+         (haskell-ts-mode . lsp-deferred)
 	       (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :config
   (setq lsp-headerline-breadcrumb-enable nil)
   (setq warning-suppress-types '((lsp-mode) (lsp-mode))))
 
-(setq lsp-enabled-clients '(deno-ls html-ls))
+;; I think if we don't add this we will enable automatically all the clients available
+;(setq lsp-enabled-clients '(deno-ls html-ls lsp-haskell))
 
 ;; Delay inline suggestions by 2 seconds
 (setq completion-preview-idle-delay 2)
@@ -348,7 +352,7 @@
 
 ;; --------------------------------------------------
 ;; Haskell
-(use-package haskell-mode)
+; (use-package haskell-mode)
 
 ;; --------------------------------------------------
 ;; Julia
