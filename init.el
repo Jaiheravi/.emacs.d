@@ -193,12 +193,23 @@
         (typescript-mode . typescript-ts-mode)))
 
 ;; LSP stuff
+;; ---------
+
+;; Haskell
 (use-package lsp-haskell)
+
+;; Swift
+(use-package lsp-sourcekit
+  :config
+  (setq lsp-sourcekit-executable (string-trim (shell-command-to-string "xcrun --find sourcekit-lsp"))))
+
+;; LSP itself
 (use-package lsp-mode
   :hook ((typescript-ts-mode . lsp-deferred)
 	       (tsx-ts-mode . lsp-deferred)
          (html-ts-mode . lsp-deferred)
          (haskell-ts-mode . lsp-deferred)
+         (swift-mode . lsp-deferred)
 	       (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :config
@@ -207,6 +218,7 @@
 
 ;; I think if we don't add this we will enable automatically all the clients available
 ;(setq lsp-enabled-clients '(deno-ls html-ls lsp-haskell))
+
 
 ;; Delay inline suggestions by 2 seconds
 (setq completion-preview-idle-delay 2)
@@ -351,10 +363,6 @@
 (use-package ess)
 
 ;; --------------------------------------------------
-;; Haskell
-; (use-package haskell-mode)
-
-;; --------------------------------------------------
 ;; Julia
 (use-package julia-mode)
 (use-package julia-repl)
@@ -369,6 +377,13 @@
 (use-package d-mode)
 
 ;; --------------------------------------------------
+;; Swift
+;; Note: The standard way to develop in swift is with xcode,
+;;   but it's too hard to use for me.
+(use-package swift-mode)
+(use-package swift-helpful) ;; Get documentation of the selected symbol
+
+;; --------------------------------------------------
 ;; Fortran
 
 ;; --------------------------------------------------
@@ -376,12 +391,6 @@
 
 ;; --------------------------------------------------
 ;; Prolog
-
-;; --------------------------------------------------
-;; Dart
-
-;; --------------------------------------------------
-;; Scala
 
 ;; --------------------------------------------------
 ;; Elixir
@@ -393,10 +402,8 @@
 ;; Erlang
 
 ;; --------------------------------------------------
-;; Smalltalk
-
-;; --------------------------------------------------
 ;; Typescript / Javascript and other web stuff
+;; Note: Check the LSP and Tree-sitter stuff for more things related to these languages
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
