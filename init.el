@@ -216,8 +216,7 @@
   (setq lsp-headerline-breadcrumb-enable nil)
   (setq warning-suppress-types '((lsp-mode) (lsp-mode))))
 
-;; I think if we don't add this we will enable automatically all the clients available
-;(setq lsp-enabled-clients '(deno-ls html-ls lsp-haskell))
+(setq lsp-enabled-clients '(deno-ls html-ls lsp-haskell))
 
 
 ;; Delay inline suggestions by 2 seconds
