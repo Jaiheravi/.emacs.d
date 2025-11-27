@@ -566,13 +566,6 @@
 (set-face-foreground 'line-number-current-line flexoki-red-300)
 (set-face-background 'region flexoki-yellow-50)
 
-;; IDO
-;; (set-face-foreground 'ido-subdir flexoki-blue-400)
-;; (set-face-foreground 'ido-first-match flexoki-green-400)
-;; (set-face-foreground 'ido-only-match flexoki-green-400)
-;; (set-face-background 'ido-indicator flexoki-red-50)
-;; (set-face-foreground 'ido-indicator flexoki-black)
-
 ;; Syntax highlighting
 (set-face-attribute 'font-lock-function-name-face nil :foreground flexoki-black)
 (set-face-attribute 'font-lock-function-call-face nil :foreground flexoki-black)
