@@ -171,9 +171,21 @@
 ;; Allows to use :diminish in use-package to hide modes in the modeline
 (use-package diminish)
 
+;; A better experience for writing text
+(use-package olivetti
+  :hook
+  (org-mode . olivetti-mode))
+
+;; Automatically create better file names
+(use-package denote
+  :config
+  (setq denote-directory (expand-file-name "~/Developer/Notebook")))
+
 ;; Tree-sitter Language Grammars
 ;; Run M-x treesit-install-language-grammar to install the grammars listed here
-(use-package haskell-ts-mode)
+(use-package haskell-ts-mode
+  :straight (haskell-ts-mode :type git :host github :repo "Jaiheravi/haskell-ts-mode"))
+
 (setq treesit-language-source-alist
       '((css . ("https://github.com/tree-sitter/tree-sitter-css"))
         (html . ("https://github.com/tree-sitter/tree-sitter-html"))
@@ -208,15 +220,17 @@
   :hook ((typescript-ts-mode . lsp-deferred)
 	       (tsx-ts-mode . lsp-deferred)
          (html-ts-mode . lsp-deferred)
+         (css-ts-mode . lsp-deferred)
          (haskell-ts-mode . lsp-deferred)
          (swift-mode . lsp-deferred)
 	       (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :config
+  (setq lsp-lens-enable nil) ; A bit too intrusive
   (setq lsp-headerline-breadcrumb-enable nil)
   (setq warning-suppress-types '((lsp-mode) (lsp-mode))))
 
-(setq lsp-enabled-clients '(deno-ls html-ls lsp-haskell))
+(setq lsp-enabled-clients '(deno-ls html-ls css-ls lsp-haskell))
 
 
 ;; Delay inline suggestions by 2 seconds
@@ -577,11 +591,11 @@
 (set-face-attribute 'font-lock-builtin-face nil :foreground flexoki-black)
 (set-face-attribute 'font-lock-string-face nil :foreground flexoki-base-600 :slant 'italic)
 (set-face-attribute 'font-lock-number-face nil :foreground flexoki-base-600)
-(set-face-attribute 'font-lock-operator-face nil :foreground flexoki-base-600 :weight 'light)
+(set-face-attribute 'font-lock-operator-face nil :foreground flexoki-base-600 :weight 'light :slant 'normal)
 (set-face-attribute 'font-lock-punctuation-face nil :foreground flexoki-base-500)
 (set-face-attribute 'font-lock-bracket-face nil :foreground flexoki-base-500)
 (set-face-attribute 'font-lock-delimiter-face nil :foreground flexoki-base-500)
-
+(set-face-attribute 'lsp-details-face nil :slant 'italic) ;; Useful for lens type annotations in Haskell
 
 ;; ==================================================
 ;; Keybindings
