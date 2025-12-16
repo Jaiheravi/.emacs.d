@@ -12,7 +12,10 @@
 	      vertico
 	      marginalia
 	      flycheck
-	      spell-fu))
+	      spell-fu
+        haskell-ts-mode
+        lsp-mode
+        geiser-chez))
 
 ;; All my custom code is inside the custom directory
 (add-to-list 'load-path "~/.emacs.d/custom")
@@ -22,6 +25,12 @@
 
 ;; Custom functions
 (load "functions")
+
+(use-package dired
+  :custom
+  (dired-listing-switches "-alh")
+  :config
+  (set-face-foreground 'dired-directory flexoki-blue-700))
 
 ;; A better experience for writing text
 (use-package olivetti
@@ -104,6 +113,8 @@
   (spell-fu-incorrect-face ((t (:underline nil :style wave :color ,flexoki-yellow-200))))
   :custom
   (flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc dired-mode)))
+
+(load "languages")
 
 ;; =============================================================================
 ;; General settings
@@ -245,13 +256,6 @@
 (set-face-foreground 'line-number-current-line flexoki-red-300)
 (set-face-background 'region flexoki-yellow-50)
 
-(use-package dired
-  :custom
-  (dired-listing-switches "-alh")
-  :config
-  (set-face-foreground 'dired-directory flexoki-blue-700))
-
-
 ;; Syntax highlighting
 (set-face-attribute 'font-lock-function-name-face nil :foreground flexoki-black)
 (set-face-attribute 'font-lock-function-call-face nil :foreground flexoki-black)
@@ -268,3 +272,17 @@
 (set-face-attribute 'font-lock-punctuation-face nil :foreground flexoki-base-500)
 (set-face-attribute 'font-lock-bracket-face nil :foreground flexoki-base-500)
 (set-face-attribute 'font-lock-delimiter-face nil :foreground flexoki-base-500)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages nil)
+ '(package-vc-selected-packages
+   '((haskell-ts-mode :url "git@github.com:Jaiheravi/haskell-ts-mode.git"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
