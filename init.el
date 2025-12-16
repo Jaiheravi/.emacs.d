@@ -245,6 +245,13 @@
 (set-face-foreground 'line-number-current-line flexoki-red-300)
 (set-face-background 'region flexoki-yellow-50)
 
+(use-package dired
+  :custom
+  (dired-listing-switches "-alh")
+  :config
+  (set-face-foreground 'dired-directory flexoki-blue-700))
+
+
 ;; Syntax highlighting
 (set-face-attribute 'font-lock-function-name-face nil :foreground flexoki-black)
 (set-face-attribute 'font-lock-function-call-face nil :foreground flexoki-black)
