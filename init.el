@@ -1,190 +1,120 @@
-';; Prevent package.el loading packages prior to their init-file loading
-;;   This is a recommendation from the documentation of straight.el
-(setq package-enable-at-startup nil)
+;;; -*- lexical-binding: t -*-
 
-;; Semi-self-contained code
-(add-to-list 'load-path "~/.emacs.d/mine")
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
+;; Install packages in this list with M-x package-install-selected-packages
+;; We only need to list the packages that are not bundled with Emacs
+(setq package-selected-packages
+      '(olivetti
+	      denote
+	      iedit
+	      vertico
+	      marginalia
+	      flycheck
+	      spell-fu))
+
+;; All my custom code is inside the custom directory
+(add-to-list 'load-path "~/.emacs.d/custom")
 
 ;; Color palette
 (load "colors")
 
-;; ================================================================================
-;; Packages
-;; TODO: Should I keep using this?
-
-;; Set up the "Straight" package manager
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name
-        "straight/repos/straight.el/bootstrap.el"
-        (or (bound-and-true-p straight-base-dir)
-            user-emacs-directory)))
-      (bootstrap-version 7))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-;; Use use-package with straight.el
-(straight-use-package 'use-package)
-(setq straight-use-package-by-default 1)
-
-;; Loads all language-specific packages
-;; Especially those using tree-sitter and LSP
-(load "languages")
-
-;; Allows to use :diminish in use-package to hide modes in the modeline
-(use-package diminish)
+;; Custom functions
+(load "functions")
 
 ;; A better experience for writing text
 (use-package olivetti
-  :hook
-  (org-mode . olivetti-mode))
+  :hook org-mode)
 
-;; Automatically create better file names
+;; Automatically create better file names for my Notebook
 (use-package denote
+  :defer t
   :config
   (setq denote-directory (expand-file-name "~/Developer/Notebook")))
 
-;; Delay inline suggestions by 2 seconds
-(setq completion-preview-idle-delay 2)
-
 ;; Display the undo tree
 (use-package vundo
+  :ensure t
+  :bind ("C-x u" . vundo)
   :config
   (setq vundo-glyph-alist vundo-unicode-symbols))
 
-;; Version Control
-(use-package magit)
-
 ;; Simultaneous editing of occurrences
+;; TODO: Update the color to a variable from colors.el
 (use-package iedit
+  :ensure t
+  :defer t
   :config
   (set-face-background 'iedit-occurrence "#E1ECEB"))
 
-;; Enable code checking
-(use-package flycheck
-  :init
-  (global-flycheck-mode)
-  :custom
-  (flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc)))
-
-;; Spell check for natural language
-;; Requires Aspell
-(use-package spell-fu
-  :config
-  (spell-fu-global-mode)
-  :init
-  (add-hook 'spell-fu-mode-hook
-	    (lambda ()
-	      (spell-fu-dictionary-add
-	       (spell-fu-get-personal-dictionary "en_tech" "~/Library/Spelling/en_tech.pws"))
-	      )))
-
-;; Disable spell-checking on Dired
-(add-hook 'dired-mode-hook (lambda () (spell-fu-mode -1)))
-
-;; Make the spelling errors less prominent
-(add-hook 'spell-fu-mode-hook
-	  (lambda ()
-	    (set-face-attribute 'spell-fu-incorrect-face nil :underline `(:color ,flexoki-yellow-200 :style wave))))
-
-;; Show what keybindings are available after a prefix like C-x or C-c.
-(setq which-key-separator " → "
-      which-key-max-display-columns 1 ; We need a single column to have space for the symbol description
-      which-key-popup-type 'side-window
-      which-key-side-window-location 'bottom
-      which-key-side-window-max-width 0.75
-      which-key-max-description-length 0.9
-      which-key-show-docstrings t)
-(which-key-mode t)
-
 ;; Show what functions are available on M-x
 (use-package vertico
+  :ensure t
+  :defer t
   :init
   (vertico-mode))
 
-;; Show function descriptions
+;; Display descriptions of functions
 (use-package marginalia
+  :ensure t
+  :defer t
   :init
   (marginalia-mode))
 
 ;; Persist history over Emacs restarts.
 ;; - Vertico sorts by history position.
 (use-package savehist
+  :ensure t
   :init
   (savehist-mode))
 
 ;; Enable finding functions, variables, etc. Without being precise in the spelling.
 (use-package orderless
+  :defer t
+  :ensure t
   :custom
   (completion-styles '(orderless basic))
-  (orderless-completion-category-overrides '((file (styles basic partial-completion))))
-  (setq orderless-matching-styles '(orderless-flex)))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-pcm-leading-wildcard t))
 
 ;; .editorconfig file support
 (use-package editorconfig
-  :diminish
+  :ensure t
+  :defer t
+  :delight
   :config
   (editorconfig-mode +1))
 
-;; Display current match number and total matches when searching text
-(use-package anzu
-  :diminish
+;; Enable code checking
+(use-package flycheck
+  :ensure t
+  :custom
+  (flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc))
+  :init
+  (global-flycheck-mode))
+
+;; Spell check for natural language
+;; Requires Aspell
+(use-package spell-fu
+  :ensure t
   :config
-  (global-anzu-mode t))
-
-;; ================================================================================
-;; Custom functions
-
-;; Duplicate line
-(defun duplicate-line ()
-  "Duplicate current line."
-  (interactive)
-  (let ((line (buffer-substring (line-beginning-position) (line-end-position))))
-    (end-of-line)
-    (newline)
-    (insert line)))
-
-(defun custom-beginning-of-line ()
- "Toggle between the first non-whitespace character and the beginning of the line."
- (interactive)
- (let ((orig-point (point)))
-   (back-to-indentation)
-   (when (= orig-point (point))
-     (move-beginning-of-line 1))))
-
-(defun copy-to-clipboard ()
-  "Copies selection to x-clipboard."
-  (interactive)
-  (if (display-graphic-p)
-      (progn
-	(message "Yanked region to x-clipboard!")
-	(call-interactively 'clipboard-kill-ring-save))
-    (if (region-active-p)
-	(progn
-	  (shell-command-on-region (region-beginning) (region-end) "pbcopy")
-	  (message "Yanked region to clipboard!")
-	  (deactivate-mark))
-      (message "No region active; can't yank to clipboard!"))))
-
-(defun paste-from-clipboard ()
-  "Pastes from x-clipboard."
-  (interactive)
-  (if (display-graphic-p)
-      (progn
-	(clipboard-yank)
-	(message "graphics active"))
-    (insert (shell-command-to-string "pbpaste"))))
+  (spell-fu-global-mode)
+  :custom-face
+  (spell-fu-incorrect-face ((t (:underline nil :style wave :color ,flexoki-yellow-200))))
+  :custom
+  (flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc dired-mode)))
 
 ;; =============================================================================
 ;; General settings
 
-;; Never use tabs for indentation
+;; How total number of matches when searching
+(setq isearch-lazy-count t)
+
+;; Delay inline suggestions by 2 seconds
+(setq completion-preview-idle-delay 2)
+
+;; ;; Never use tabs for indentation
 (setq-default indent-tabs-mode nil)
 
 ;; Always use 2 spaces for indentation
@@ -202,8 +132,19 @@
 (with-eval-after-load 'compile
   (setq compilation-scroll-output t))
 
+;; Show what keybindings are available after a prefix like C-x or C-c.
+(setq which-key-separator " → "
+      which-key-max-display-columns 1 ; We need a single column to have space for the symbol description
+      which-key-popup-type 'side-window
+      which-key-side-window-location 'bottom
+      which-key-side-window-max-width 0.75
+      which-key-max-description-length 0.9
+      which-key-show-docstrings t)
+(which-key-mode t)
+
 ;; Keep buffers in sync with file changes
 (global-auto-revert-mode t)
+
 ;; Keep buffers in sync with directory changes
 (setq global-auto-revert-non-file-buffers t)
 
@@ -239,18 +180,10 @@
 ;; Enable auto-completion for code and text
 (global-completion-preview-mode)
 
-;; Remove mode labels in the modeline
-(diminish 'completion-preview-mode)
-(diminish 'eldoc-mode)
-(diminish 'flycheck-mode)
-(diminish 'which-key-mode)
-(diminish 'lsp-lens-mode)
-
 ;; Match delimiters
 (setq electric-pair-preserve-balance t)
 (setq electric-pair-delete-adjacent-pairs t)
 (electric-pair-mode)
-
 
 ;; ==================================================
 ;; Keybindings
@@ -259,13 +192,13 @@
 (global-unset-key (kbd "C-x C-b"))
 
 ;; Redefine core keybindings
-(define-key global-map (kbd "C-a") '("Go to beginning of line" . custom-beginning-of-line))
+(define-key global-map (kbd "C-a") '("Go to beginning of line" . custom/beginning-of-line))
 
 ;; Clipboard keybindings
-(define-key global-map (kbd "C-c c") '("Copy to clipboard" . copy-to-clipboard))
-(define-key global-map (kbd "C-c v") '("Paste from clipboard" . paste-from-clipboard))
-(define-key global-map (kbd "C-x u") '("Display undo tree" . vundo))
-(define-key global-map (kbd "C-c d") '("Duplicate line" . duplicate-line))
+(define-key global-map (kbd "C-c c") '("Copy to clipboard" . custom/copy-to-clipboard))
+(define-key global-map (kbd "C-c v") '("Paste from clipboard" . custom/paste-from-clipboard))
+
+(define-key global-map (kbd "C-c d") '("Duplicate line" . custom/duplicate-line))
 (define-key global-map (kbd "C-x C-r") '("Open recent file" . recentf-open))
 
 ;; ================================================================================
@@ -328,4 +261,3 @@
 (set-face-attribute 'font-lock-punctuation-face nil :foreground flexoki-base-500)
 (set-face-attribute 'font-lock-bracket-face nil :foreground flexoki-base-500)
 (set-face-attribute 'font-lock-delimiter-face nil :foreground flexoki-base-500)
-(set-face-attribute 'lsp-details-face nil :slant 'italic) ;; Useful for lens type annotations in Haskell

@@ -1,7 +1,8 @@
 ;; Tree-sitter Language Grammars
 ;; Run M-x treesit-install-language-grammar to install the grammars listed here
 (use-package haskell-ts-mode
-  :straight (haskell-ts-mode :type git :host github :repo "Jaiheravi/haskell-ts-mode"))
+  :vc (:url "git@github.com:Jaiheravi/haskell-ts-mode.git"
+       :rev :newest))
 
 (setq treesit-language-source-alist
       '((css . ("https://github.com/tree-sitter/tree-sitter-css"))
