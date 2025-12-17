@@ -30,6 +30,17 @@
 ;; Custom functions
 (load "functions")
 
+(use-package magit
+  :config
+  (set-face-attribute 'magit-diff-added nil :background rose-surface :foreground rose-foam)
+  (set-face-attribute 'magit-diff-removed nil :background rose-surface :foreground rose-rose)
+  (set-face-attribute 'magit-diff-added-highlight nil :background rose-base :foreground rose-foam)
+  (set-face-attribute 'magit-diff-removed-highlight nil :background rose-base :foreground rose-rose)
+  (set-face-attribute 'magit-diff-context-highlight nil :background rose-surface :foreground rose-muted)
+  (set-face-attribute 'magit-diff-hunk-heading-highlight nil :background rose-overlay :foreground rose-muted :weight 'bold)
+  (set-face-attribute 'magit-diff-hunk-heading nil :background rose-overlay :foreground rose-muted :weight 'normal)
+  (set-face-attribute 'magit-section-heading nil :background nil :foreground rose-foam))
+
 (use-package dired
   :custom
   (dired-listing-switches "-alh")
@@ -305,14 +316,6 @@
 (set-face-attribute 'lazy-highlight nil :background rose-base :foreground rose-love)
 (set-face-attribute 'minibuffer-prompt nil :foreground rose-rose :weight 'normal)
 (set-face-attribute 'highlight nil :background rose-overlay)
-(set-face-attribute 'magit-diff-added nil :background rose-surface :foreground rose-foam)
-(set-face-attribute 'magit-diff-removed nil :background rose-surface :foreground rose-rose)
-(set-face-attribute 'magit-diff-added-highlight nil :background rose-base :foreground rose-foam)
-(set-face-attribute 'magit-diff-removed-highlight nil :background rose-base :foreground rose-rose)
-(set-face-attribute 'magit-diff-context-highlight nil :background rose-surface :foreground rose-muted)
-(set-face-attribute 'magit-diff-hunk-heading-highlight nil :background rose-overlay :foreground rose-muted :weight 'bold)
-(set-face-attribute 'magit-diff-hunk-heading nil :background rose-overlay :foreground rose-muted :weight 'normal)
-(set-face-attribute 'magit-section-heading nil :background nil :foreground rose-foam)
 
 ;; Syntax highlighting
 (set-face-attribute 'font-lock-function-name-face nil :foreground rose-text)
