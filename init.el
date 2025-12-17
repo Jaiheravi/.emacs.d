@@ -216,18 +216,20 @@
       ;; No scroll bar
       (scroll-bar-mode -1)
 
+      ;; Meta key
+      (setq mac-option-modifier 'meta)
+      (setq mac-right-option-modifier nil)
+
       ;; Blend the fringe with the background
       (set-face-attribute 'fringe nil
-                          :background flexoki-base-paper
-                          :foreground flexoki-orange-100)
+                          :background rose-surface
+                          :foreground rose-overlay)
       ;; Use "paper" color for the frames
       ;; TODO: I should use a variable here but I didn't know how
-      (add-to-list 'default-frame-alist '(background-color . "#FEFCF0"))
+      (add-to-list 'default-frame-alist '(background-color . "#fffaf3"))
       (set-face-attribute 'default nil
                           :family "JetBrains Mono"
                           :height 160)))
-
-
 
 ;; ==================================================
 ;; Keybindings
@@ -254,14 +256,14 @@
 (set-face-background 'ansi-color-black rose-text)
 (set-face-foreground 'ansi-color-bright-black rose-muted)
 (set-face-background 'ansi-color-bright-black rose-muted)
-(set-face-foreground 'ansi-color-blue flexoki-blue-600)
-(set-face-background 'ansi-color-blue flexoki-blue-600)
-(set-face-foreground 'ansi-color-bright-blue flexoki-blue-400)
-(set-face-background 'ansi-color-bright-blue flexoki-blue-400)
-(set-face-foreground 'ansi-color-cyan flexoki-cyan-600)
-(set-face-background 'ansi-color-cyan flexoki-cyan-600)
-(set-face-foreground 'ansi-color-bright-cyan flexoki-cyan-400)
-(set-face-background 'ansi-color-bright-cyan flexoki-cyan-400)
+(set-face-foreground 'ansi-color-blue rose-pine)
+(set-face-background 'ansi-color-blue rose-pine)
+(set-face-foreground 'ansi-color-bright-blue rose-pine)
+(set-face-background 'ansi-color-bright-blue rose-pine)
+(set-face-foreground 'ansi-color-cyan rose-iris)
+(set-face-background 'ansi-color-cyan rose-iris)
+(set-face-foreground 'ansi-color-bright-cyan rose-iris)
+(set-face-background 'ansi-color-bright-cyan rose-iris)
 (set-face-foreground 'ansi-color-magenta rose-iris)
 (set-face-background 'ansi-color-magenta rose-iris)
 (set-face-foreground 'ansi-color-bright-magenta rose-iris)
@@ -299,9 +301,18 @@
 (set-face-foreground 'line-number rose-highlight-high)
 (set-face-foreground 'line-number-current-line rose-rose)
 (set-face-background 'region rose-highlight-low)
-
 (set-face-attribute 'isearch nil :background rose-overlay :foreground rose-love)
 (set-face-attribute 'lazy-highlight nil :background rose-base :foreground rose-love)
+(set-face-attribute 'minibuffer-prompt nil :foreground rose-rose :weight 'normal)
+(set-face-attribute 'highlight nil :background rose-overlay)
+(set-face-attribute 'magit-diff-added nil :background rose-surface :foreground rose-foam)
+(set-face-attribute 'magit-diff-removed nil :background rose-surface :foreground rose-rose)
+(set-face-attribute 'magit-diff-added-highlight nil :background rose-base :foreground rose-foam)
+(set-face-attribute 'magit-diff-removed-highlight nil :background rose-base :foreground rose-rose)
+(set-face-attribute 'magit-diff-context-highlight nil :background rose-surface :foreground rose-muted)
+(set-face-attribute 'magit-diff-hunk-heading-highlight nil :background rose-overlay :foreground rose-muted :weight 'bold)
+(set-face-attribute 'magit-diff-hunk-heading nil :background rose-overlay :foreground rose-muted :weight 'normal)
+(set-face-attribute 'magit-section-heading nil :background nil :foreground rose-foam)
 
 ;; Syntax highlighting
 (set-face-attribute 'font-lock-function-name-face nil :foreground rose-text)
@@ -309,7 +320,7 @@
 (set-face-attribute 'font-lock-variable-name-face nil :foreground rose-text)
 (set-face-attribute 'font-lock-variable-use-face nil :foreground rose-text)
 (set-face-attribute 'font-lock-keyword-face nil :foreground rose-text)
-(set-face-attribute 'font-lock-comment-face nil :slant 'italic :foreground rose-love)
+(set-face-attribute 'font-lock-comment-face nil :slant 'italic :foreground rose-rose)
 (set-face-attribute 'font-lock-type-face nil :foreground rose-text)
 (set-face-attribute 'font-lock-constant-face nil :foreground rose-text)
 (set-face-attribute 'font-lock-builtin-face nil :foreground rose-text)
