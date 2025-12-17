@@ -13,9 +13,13 @@
 	      marginalia
 	      flycheck
 	      spell-fu
-        haskell-ts-mode
         lsp-mode
-        geiser-chez))
+        geiser-chez
+        latex-preview-pane))
+
+;; Install packages in this list with M-x package-vc-install-selected-packages
+(setq package-vc-selected-packages
+   '((haskell-ts-mode :url "git@github.com:Jaiheravi/haskell-ts-mode.git")))
 
 ;; All my custom code is inside the custom directory
 (add-to-list 'load-path "~/.emacs.d/custom")
@@ -196,6 +200,34 @@
 (setq electric-pair-delete-adjacent-pairs t)
 (electric-pair-mode)
 
+;; --------------------------------------------------
+;; GUI Settings
+;;
+;; I use the Emacs GUI when I write LaTex documents,
+;; so I need to clean things up for that. Everything
+;; else assumes use in the terminal.
+
+(if (display-graphic-p)
+    (progn
+      ;; No tool bar
+      (tool-bar-mode -1)
+
+      ;; No scroll bar
+      (scroll-bar-mode -1)
+
+      ;; Blend the fringe with the background
+      (set-face-attribute 'fringe nil
+                          :background flexoki-base-paper
+                          :foreground flexoki-orange-100)
+      ;; Use "paper" color for the frames
+      ;; TODO: I should use a variable here but I didn't know how
+      (add-to-list 'default-frame-alist '(background-color . "#FEFCF0"))
+      (set-face-attribute 'default nil
+                          :family "JetBrains Mono"
+                          :height 160)))
+
+
+
 ;; ==================================================
 ;; Keybindings
 
@@ -246,10 +278,20 @@
 (set-face-background 'ansi-color-bright-yellow flexoki-yellow-150)
 
 ;; Global UI
-(set-face-background 'mode-line flexoki-base-50)
-(set-face-foreground 'mode-line flexoki-base-800)
-(set-face-background 'mode-line-inactive flexoki-base-50)
-(set-face-foreground 'mode-line-inactive flexoki-base-400)
+(set-face-attribute 'mode-line nil
+                    :background "#FDF9E5"
+                    :foreground flexoki-base-800
+                    :box '(:style flat-button :line-width 4))
+
+(set-face-attribute 'mode-line-inactive nil
+                    :background flexoki-base-50
+                    :foreground flexoki-base-300
+                    :box '(:style flat-button :line-width 4))
+
+(set-face-attribute 'default nil
+                    :foreground "#100F0F"
+                    :background "#FFFCF0")
+
 (set-face-background 'show-paren-match nil)
 (set-face-foreground 'show-paren-match flexoki-red-300)
 (set-face-foreground 'line-number flexoki-base-200)
@@ -272,17 +314,3 @@
 (set-face-attribute 'font-lock-punctuation-face nil :foreground flexoki-base-500)
 (set-face-attribute 'font-lock-bracket-face nil :foreground flexoki-base-500)
 (set-face-attribute 'font-lock-delimiter-face nil :foreground flexoki-base-500)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil)
- '(package-vc-selected-packages
-   '((haskell-ts-mode :url "git@github.com:Jaiheravi/haskell-ts-mode.git"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
