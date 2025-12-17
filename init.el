@@ -15,7 +15,8 @@
 	      spell-fu
         lsp-mode
         geiser-chez
-        latex-preview-pane))
+        latex-preview-pane
+        yasnippet))
 
 ;; Install packages in this list with M-x package-vc-install-selected-packages
 (setq package-vc-selected-packages
@@ -129,6 +130,15 @@
   (spell-fu-incorrect-face ((t (:underline nil :style wave :color ,flexoki-yellow-200))))
   :custom
   (flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc dired-mode)))
+
+;; Quickly insert bits of code
+(use-package yasnippet
+  :ensure t
+  :config
+  (setq yas-snippet-dirs
+      '("~/.emacs.d/snippets"))
+  :init
+  (yas-global-mode 1))
 
 (load "languages")
 
@@ -333,3 +343,17 @@
 (set-face-attribute 'font-lock-punctuation-face nil :foreground rose-subtle)
 (set-face-attribute 'font-lock-bracket-face nil :foreground rose-muted)
 (set-face-attribute 'font-lock-delimiter-face nil :foreground rose-muted)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(denote flycheck geiser-chez iedit latex-preview-pane lsp-mode
+            marginalia olivetti spell-fu vertico yasnippet)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

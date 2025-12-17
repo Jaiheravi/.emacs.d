@@ -1,0 +1,7 @@
+# -*- mode: sh -*-
+# name: zsh-bang
+# key: !
+# --
+#!/usr/bin/env zsh
+
+$0

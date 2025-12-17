@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: runnable comment block
+# key: run-block
+# --
+{- \$>
+$0
+<\$ -}

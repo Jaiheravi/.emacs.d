@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: runnable comment line
+# key: run
+# --
+-- \$> $0
