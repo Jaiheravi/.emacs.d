@@ -1,6 +1,8 @@
 ;; ================================================================================
 ;; Colors
-;; Palette from https://github.com/kepano/flexoki
+
+;; --------------------------------------------------
+;; Flexoki (https://github.com/kepano/flexoki)
 
 ;; Base
 (setq flexoki-base-paper "#FFFCF0"
@@ -138,3 +140,22 @@
       flexoki-magenta-850 "#4F1B39"
       flexoki-magenta-900 "#39172B"
       flexoki-magenta-950 "#24131D")
+
+;; --------------------------------------------------
+;; Rosé Pine Dawn (https://rosepinetheme.com/palette/ingredients/)
+
+(setq rose-base "#faf4ed"
+      rose-surface "#fffaf3"
+      rose-overlay "#f2e9e1"
+      rose-muted "#9893a5"
+      rose-subtle "#797593"
+      rose-text "#575279"
+      rose-love "#b4637a"
+      rose-gold "#ea9d34"
+      rose-rose "#d7827e"
+      rose-pine "#286983"
+      rose-foam "#56949f"
+      rose-iris "#907aa9"
+      rose-highlight-low "#f4ede8"
+      rose-highlight-med "#dfdad9"
+      rose-highlight-high "#cecacd")

@@ -50,16 +50,17 @@
 (use-package vundo
   :ensure t
   :bind ("C-x u" . vundo)
-  :config
-  (setq vundo-glyph-alist vundo-unicode-symbols))
+  :custom
+  (vundo-glyph-alist vundo-unicode-symbols))
 
 ;; Simultaneous editing of occurrences
-;; TODO: Update the color to a variable from colors.el
 (use-package iedit
   :ensure t
   :defer t
+  :bind
+  ("C-c i" . iedit-mode)
   :config
-  (set-face-background 'iedit-occurrence "#E1ECEB"))
+  (set-face-background 'iedit-occurrence rose-overlay))
 
 ;; Show what functions are available on M-x
 (use-package vertico
@@ -241,6 +242,7 @@
 (define-key global-map (kbd "C-c c") '("Copy to clipboard" . custom/copy-to-clipboard))
 (define-key global-map (kbd "C-c v") '("Paste from clipboard" . custom/paste-from-clipboard))
 
+;; Other
 (define-key global-map (kbd "C-c d") '("Duplicate line" . custom/duplicate-line))
 (define-key global-map (kbd "C-x C-r") '("Open recent file" . recentf-open))
 
@@ -248,10 +250,10 @@
 ;; Color customization
 
 ;; ANSI Colors
-(set-face-foreground 'ansi-color-black flexoki-black)
-(set-face-background 'ansi-color-black flexoki-black)
-(set-face-foreground 'ansi-color-bright-black flexoki-base-600)
-(set-face-background 'ansi-color-bright-black flexoki-base-600)
+(set-face-foreground 'ansi-color-black rose-text)
+(set-face-background 'ansi-color-black rose-text)
+(set-face-foreground 'ansi-color-bright-black rose-muted)
+(set-face-background 'ansi-color-bright-black rose-muted)
 (set-face-foreground 'ansi-color-blue flexoki-blue-600)
 (set-face-background 'ansi-color-blue flexoki-blue-600)
 (set-face-foreground 'ansi-color-bright-blue flexoki-blue-400)
@@ -260,57 +262,60 @@
 (set-face-background 'ansi-color-cyan flexoki-cyan-600)
 (set-face-foreground 'ansi-color-bright-cyan flexoki-cyan-400)
 (set-face-background 'ansi-color-bright-cyan flexoki-cyan-400)
-(set-face-foreground 'ansi-color-magenta flexoki-magenta-600)
-(set-face-background 'ansi-color-magenta flexoki-magenta-600)
-(set-face-foreground 'ansi-color-bright-magenta flexoki-magenta-400)
-(set-face-background 'ansi-color-bright-magenta flexoki-magenta-400)
-(set-face-foreground 'ansi-color-red flexoki-red-600)
-(set-face-background 'ansi-color-red flexoki-red-600)
-(set-face-foreground 'ansi-color-bright-red flexoki-red-400)
-(set-face-background 'ansi-color-bright-red flexoki-red-400)
-(set-face-foreground 'ansi-color-green flexoki-green-600)
-(set-face-background 'ansi-color-green flexoki-green-600)
-(set-face-foreground 'ansi-color-bright-green flexoki-green-400)
-(set-face-background 'ansi-color-bright-green flexoki-green-400)
-(set-face-foreground 'ansi-color-yellow flexoki-yellow-300)
-(set-face-background 'ansi-color-yellow flexoki-yellow-300)
-(set-face-foreground 'ansi-color-bright-yellow flexoki-yellow-150)
-(set-face-background 'ansi-color-bright-yellow flexoki-yellow-150)
+(set-face-foreground 'ansi-color-magenta rose-iris)
+(set-face-background 'ansi-color-magenta rose-iris)
+(set-face-foreground 'ansi-color-bright-magenta rose-iris)
+(set-face-background 'ansi-color-bright-magenta rose-iris)
+(set-face-foreground 'ansi-color-red rose-love)
+(set-face-background 'ansi-color-red rose-love)
+(set-face-foreground 'ansi-color-bright-red rose-love)
+(set-face-background 'ansi-color-bright-red rose-love)
+(set-face-foreground 'ansi-color-green rose-foam)
+(set-face-background 'ansi-color-green rose-foam)
+(set-face-foreground 'ansi-color-bright-green rose-foam)
+(set-face-background 'ansi-color-bright-green rose-foam)
+(set-face-foreground 'ansi-color-yellow rose-gold)
+(set-face-background 'ansi-color-yellow rose-gold)
+(set-face-foreground 'ansi-color-bright-yellow rose-gold)
+(set-face-background 'ansi-color-bright-yellow rose-gold)
 
 ;; Global UI
 (set-face-attribute 'mode-line nil
-                    :background "#FDF9E5"
-                    :foreground flexoki-base-800
+                    :background rose-highlight-low
+                    :foreground rose-subtle
                     :box '(:style flat-button :line-width 4))
 
 (set-face-attribute 'mode-line-inactive nil
-                    :background flexoki-base-50
-                    :foreground flexoki-base-300
+                    :background rose-surface
+                    :foreground rose-muted
                     :box '(:style flat-button :line-width 4))
 
 (set-face-attribute 'default nil
-                    :foreground "#100F0F"
-                    :background "#FFFCF0")
+                    :foreground rose-text
+                    :background rose-surface)
 
 (set-face-background 'show-paren-match nil)
-(set-face-foreground 'show-paren-match flexoki-red-300)
-(set-face-foreground 'line-number flexoki-base-200)
-(set-face-foreground 'line-number-current-line flexoki-red-300)
-(set-face-background 'region flexoki-yellow-50)
+(set-face-foreground 'show-paren-match rose-rose)
+(set-face-foreground 'line-number rose-highlight-high)
+(set-face-foreground 'line-number-current-line rose-rose)
+(set-face-background 'region rose-highlight-low)
+
+(set-face-attribute 'isearch nil :background rose-overlay :foreground rose-love)
+(set-face-attribute 'lazy-highlight nil :background rose-base :foreground rose-love)
 
 ;; Syntax highlighting
-(set-face-attribute 'font-lock-function-name-face nil :foreground flexoki-black)
-(set-face-attribute 'font-lock-function-call-face nil :foreground flexoki-black)
-(set-face-attribute 'font-lock-variable-name-face nil :foreground flexoki-black)
-(set-face-attribute 'font-lock-variable-use-face nil :foreground flexoki-black)
-(set-face-attribute 'font-lock-keyword-face nil :foreground flexoki-black)
-(set-face-attribute 'font-lock-comment-face nil :foreground flexoki-base-500 :slant 'italic)
-(set-face-attribute 'font-lock-type-face nil :foreground flexoki-black)
-(set-face-attribute 'font-lock-constant-face nil :foreground flexoki-black)
-(set-face-attribute 'font-lock-builtin-face nil :foreground flexoki-black)
-(set-face-attribute 'font-lock-string-face nil :foreground flexoki-base-600 :slant 'italic)
-(set-face-attribute 'font-lock-number-face nil :foreground flexoki-base-600)
-(set-face-attribute 'font-lock-operator-face nil :foreground flexoki-base-600 :weight 'light :slant 'normal)
-(set-face-attribute 'font-lock-punctuation-face nil :foreground flexoki-base-500)
-(set-face-attribute 'font-lock-bracket-face nil :foreground flexoki-base-500)
-(set-face-attribute 'font-lock-delimiter-face nil :foreground flexoki-base-500)
+(set-face-attribute 'font-lock-function-name-face nil :foreground rose-text)
+(set-face-attribute 'font-lock-function-call-face nil :foreground rose-text)
+(set-face-attribute 'font-lock-variable-name-face nil :foreground rose-text)
+(set-face-attribute 'font-lock-variable-use-face nil :foreground rose-text)
+(set-face-attribute 'font-lock-keyword-face nil :foreground rose-text)
+(set-face-attribute 'font-lock-comment-face nil :slant 'italic :foreground rose-love)
+(set-face-attribute 'font-lock-type-face nil :foreground rose-text)
+(set-face-attribute 'font-lock-constant-face nil :foreground rose-text)
+(set-face-attribute 'font-lock-builtin-face nil :foreground rose-text)
+(set-face-attribute 'font-lock-string-face nil :slant 'italic :foreground rose-subtle)
+(set-face-attribute 'font-lock-number-face nil :foreground rose-subtle)
+(set-face-attribute 'font-lock-operator-face nil :foreground rose-subtle)
+(set-face-attribute 'font-lock-punctuation-face nil :foreground rose-subtle)
+(set-face-attribute 'font-lock-bracket-face nil :foreground rose-muted)
+(set-face-attribute 'font-lock-delimiter-face nil :foreground rose-muted)
