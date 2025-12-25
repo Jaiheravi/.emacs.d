@@ -7,12 +7,12 @@
 ;; We only need to list the packages that are not bundled with Emacs
 (setq package-selected-packages
       '(olivetti
-	      denote
-	      iedit
-	      vertico
-	      marginalia
-	      flycheck
-	      spell-fu
+        denote
+        iedit
+        vertico
+        marginalia
+        flycheck
+        spell-fu
         lsp-mode
         geiser-chez
         latex-preview-pane
@@ -33,8 +33,10 @@
 
 (use-package magit
   :config
-  (set-face-attribute 'magit-diff-added nil :background rose-surface :foreground rose-foam)
-  (set-face-attribute 'magit-diff-removed nil :background rose-surface :foreground rose-rose)
+  (set-face-attribute
+   'magit-diff-added nil :background rose-surface :foreground rose-foam)
+  (set-face-attribute
+   'magit-diff-removed nil :background rose-surface :foreground rose-rose)
   (set-face-attribute 'magit-diff-added-highlight nil :background rose-base :foreground rose-foam)
   (set-face-attribute 'magit-diff-removed-highlight nil :background rose-base :foreground rose-rose)
   (set-face-attribute 'magit-diff-context-highlight nil :background rose-surface :foreground rose-muted)
@@ -95,7 +97,8 @@
   :init
   (savehist-mode))
 
-;; Enable finding functions, variables, etc. Without being precise in the spelling.
+;; Enable finding functions, variables, etc.
+;; Without being precise in the spelling.
 (use-package orderless
   :defer t
   :ensure t
@@ -127,7 +130,8 @@
   :config
   (spell-fu-global-mode)
   :custom-face
-  (spell-fu-incorrect-face ((t (:underline nil :style wave :color ,flexoki-yellow-200))))
+  (spell-fu-incorrect-face
+   ((t (:underline nil :style wave :color ,flexoki-yellow-200))))
   :custom
   (flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc dired-mode)))
 
@@ -142,7 +146,7 @@
 
 (load "languages")
 
-;; =============================================================================
+;; --------------------------------------------------
 ;; General settings
 
 ;; How total number of matches when searching
@@ -171,7 +175,7 @@
 
 ;; Show what keybindings are available after a prefix like C-x or C-c.
 (setq which-key-separator " → "
-      which-key-max-display-columns 1 ; We need a single column to have space for the symbol description
+      which-key-max-display-columns 1
       which-key-popup-type 'side-window
       which-key-side-window-location 'bottom
       which-key-side-window-max-width 0.75
@@ -252,24 +256,28 @@
                           :family "JetBrains Mono"
                           :height 160)))
 
-;; ==================================================
+;; --------------------------------------------------
 ;; Keybindings
 
 ;; Avoid the the mistake of calling "C-x C-b" instead of "C-x b"
 (global-unset-key (kbd "C-x C-b"))
 
 ;; Redefine core keybindings
-(define-key global-map (kbd "C-a") '("Go to beginning of line" . custom/beginning-of-line))
+(define-key global-map (kbd "C-a")
+            '("Go to beginning of line" . custom/beginning-of-line))
 
 ;; Clipboard keybindings
-(define-key global-map (kbd "C-c c") '("Copy to clipboard" . custom/copy-to-clipboard))
-(define-key global-map (kbd "C-c v") '("Paste from clipboard" . custom/paste-from-clipboard))
+(define-key global-map (kbd "C-c c")
+            '("Copy to clipboard" . custom/copy-to-clipboard))
+(define-key global-map (kbd "C-c v")
+            '("Paste from clipboard" . custom/paste-from-clipboard))
 
 ;; Other
-(define-key global-map (kbd "C-c d") '("Duplicate line" . custom/duplicate-line))
+(define-key global-map (kbd "C-c d")
+            '("Duplicate line" . custom/duplicate-line))
 (define-key global-map (kbd "C-x C-r") '("Open recent file" . recentf-open))
 
-;; ================================================================================
+;; --------------------------------------------------
 ;; Color customization
 
 ;; ANSI Colors
@@ -323,9 +331,14 @@
 (set-face-foreground 'line-number-current-line rose-rose)
 (set-face-background 'region rose-highlight-low)
 (set-face-attribute 'isearch nil :background rose-overlay :foreground rose-love)
-(set-face-attribute 'lazy-highlight nil :background rose-base :foreground rose-love)
-(set-face-attribute 'minibuffer-prompt nil :foreground rose-rose :weight 'normal)
+(set-face-attribute 'lazy-highlight nil
+                    :background rose-base :foreground rose-love)
+(set-face-attribute 'minibuffer-prompt nil
+                    :foreground rose-rose :weight 'normal)
 (set-face-attribute 'highlight nil :background rose-overlay)
+(set-face-attribute 'whitespace-line nil
+                    :background rose-overlay
+                    :foreground rose-rose)
 
 ;; Syntax highlighting
 (set-face-attribute 'font-lock-function-name-face nil :foreground rose-text)
@@ -333,11 +346,15 @@
 (set-face-attribute 'font-lock-variable-name-face nil :foreground rose-text)
 (set-face-attribute 'font-lock-variable-use-face nil :foreground rose-text)
 (set-face-attribute 'font-lock-keyword-face nil :foreground rose-text)
-(set-face-attribute 'font-lock-comment-face nil :slant 'italic :foreground rose-rose)
+(set-face-attribute 'font-lock-comment-face nil
+                    :slant 'italic
+                    :foreground rose-rose)
 (set-face-attribute 'font-lock-type-face nil :foreground rose-text)
 (set-face-attribute 'font-lock-constant-face nil :foreground rose-text)
 (set-face-attribute 'font-lock-builtin-face nil :foreground rose-text)
-(set-face-attribute 'font-lock-string-face nil :slant 'italic :foreground rose-subtle)
+(set-face-attribute 'font-lock-string-face nil
+                    :slant 'italic
+                    :foreground rose-subtle)
 (set-face-attribute 'font-lock-number-face nil :foreground rose-subtle)
 (set-face-attribute 'font-lock-operator-face nil :foreground rose-subtle)
 (set-face-attribute 'font-lock-punctuation-face nil :foreground rose-subtle)

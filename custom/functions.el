@@ -1,11 +1,16 @@
 ;; Duplicate line
+;; Copied from https://github.com/rexim/dotfiles/blob/a590e0962f9c466977d12276e28c5832c05570c1/.emacs.rc/misc-rc.el#L113C1-L123C28
 (defun custom/duplicate-line ()
-  "Duplicate current line."
+  "Duplicate current line"
   (interactive)
-  (let ((line (buffer-substring (line-beginning-position) (line-end-position))))
-    (end-of-line)
+  (let ((column (- (point) (point-at-bol)))
+        (line (let ((s (thing-at-point 'line t)))
+                (if s (string-remove-suffix "\n" s) ""))))
+    (move-end-of-line 1)
     (newline)
-    (insert line)))
+    (insert line)
+    (move-beginning-of-line 1)
+    (forward-char column)))
 
 (defun custom/beginning-of-line ()
  "Toggle between the first non-whitespace character and the beginning of the line."
