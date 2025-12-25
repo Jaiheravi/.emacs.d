@@ -16,7 +16,9 @@
         lsp-mode
         geiser-chez
         latex-preview-pane
-        yasnippet))
+        yasnippet
+        expand-region
+        multiple-cursors))
 
 ;; Install packages in this list with M-x package-vc-install-selected-packages
 (setq package-vc-selected-packages
@@ -31,18 +33,40 @@
 ;; Custom functions
 (load "functions")
 
+(use-package multiple-cursors
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c f") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-c b") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-SPC") 'mc/mark-all-like-this))
+
 (use-package magit
   :config
   (set-face-attribute
    'magit-diff-added nil :background rose-surface :foreground rose-foam)
   (set-face-attribute
    'magit-diff-removed nil :background rose-surface :foreground rose-rose)
-  (set-face-attribute 'magit-diff-added-highlight nil :background rose-base :foreground rose-foam)
-  (set-face-attribute 'magit-diff-removed-highlight nil :background rose-base :foreground rose-rose)
-  (set-face-attribute 'magit-diff-context-highlight nil :background rose-surface :foreground rose-muted)
-  (set-face-attribute 'magit-diff-hunk-heading-highlight nil :background rose-overlay :foreground rose-muted :weight 'bold)
-  (set-face-attribute 'magit-diff-hunk-heading nil :background rose-overlay :foreground rose-muted :weight 'normal)
-  (set-face-attribute 'magit-section-heading nil :background nil :foreground rose-foam))
+  (set-face-attribute
+   'magit-diff-added-highlight nil :background rose-base :foreground rose-foam)
+  (set-face-attribute
+   'magit-diff-removed-highlight nil
+   :background rose-base :foreground rose-rose)
+  (set-face-attribute
+   'magit-diff-context-highlight nil
+   :background rose-surface :foreground rose-muted)
+  (set-face-attribute
+   'magit-diff-hunk-heading-highlight nil
+   :background rose-overlay :foreground rose-muted :weight 'bold)
+  (set-face-attribute
+   'magit-diff-hunk-heading nil
+   :background rose-overlay :foreground rose-muted :weight 'normal)
+  (set-face-attribute
+   'magit-section-heading nil :background nil :foreground rose-foam))
+
+(use-package expand-region
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c SPC") 'er/expand-region))
 
 (use-package dired
   :custom
@@ -89,6 +113,13 @@
   :defer t
   :init
   (marginalia-mode))
+
+;; Make all whitespace characters visible
+(use-package whitespace
+  :config
+  (set-face-attribute 'whitespace-line nil
+                      :background rose-overlay
+                      :foreground rose-rose))
 
 ;; Persist history over Emacs restarts.
 ;; - Vertico sorts by history position.
@@ -174,14 +205,19 @@
   (setq compilation-scroll-output t))
 
 ;; Show what keybindings are available after a prefix like C-x or C-c.
-(setq which-key-separator " → "
-      which-key-max-display-columns 1
-      which-key-popup-type 'side-window
-      which-key-side-window-location 'bottom
-      which-key-side-window-max-width 0.75
-      which-key-max-description-length 0.9
-      which-key-show-docstrings t)
-(which-key-mode t)
+
+
+(use-package which-key
+  :config
+  (setq which-key-separator " → "
+        which-key-max-display-columns 1
+        which-key-popup-type 'side-window
+        which-key-side-window-location 'bottom
+        which-key-side-window-max-width 0.75
+        which-key-max-description-length 0.9
+        which-key-show-docstrings t)
+  :init
+  (which-key-mode t))
 
 ;; Keep buffers in sync with file changes
 (global-auto-revert-mode t)
@@ -336,9 +372,6 @@
 (set-face-attribute 'minibuffer-prompt nil
                     :foreground rose-rose :weight 'normal)
 (set-face-attribute 'highlight nil :background rose-overlay)
-(set-face-attribute 'whitespace-line nil
-                    :background rose-overlay
-                    :foreground rose-rose)
 
 ;; Syntax highlighting
 (set-face-attribute 'font-lock-function-name-face nil :foreground rose-text)
