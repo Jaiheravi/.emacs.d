@@ -33,6 +33,9 @@
 ;; Custom functions
 (load "functions")
 
+;; TODO: Check out Combobulate
+
+;; Select and edit multiple things at the same time
 (use-package multiple-cursors
   :ensure t
   :config
@@ -40,6 +43,7 @@
   (global-set-key (kbd "C-c b") 'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-SPC") 'mc/mark-all-like-this))
 
+;; Version Control
 (use-package magit
   :config
   (set-face-attribute
@@ -63,6 +67,7 @@
   (set-face-attribute
    'magit-section-heading nil :background nil :foreground rose-foam))
 
+;; Increase selection in a semantic way
 (use-package expand-region
   :ensure t
   :config
@@ -180,6 +185,10 @@
 ;; --------------------------------------------------
 ;; General settings
 
+;; Dictionary
+(setq dictionary-server "dict.org")
+(global-set-key (kbd "C-c l") #'dictionary-lookup-definition)
+
 ;; How total number of matches when searching
 (setq isearch-lazy-count t)
 
@@ -205,8 +214,6 @@
   (setq compilation-scroll-output t))
 
 ;; Show what keybindings are available after a prefix like C-x or C-c.
-
-
 (use-package which-key
   :config
   (setq which-key-separator " → "
