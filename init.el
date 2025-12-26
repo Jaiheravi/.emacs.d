@@ -71,6 +71,7 @@
 (use-package dired
   :custom
   (dired-listing-switches "-alh")
+  (dired-dwim-target t)
   :config
   (set-face-foreground 'dired-directory flexoki-blue-700))
 
@@ -169,9 +170,8 @@
 ;; Quickly insert bits of code
 (use-package yasnippet
   :ensure t
-  :config
-  (setq yas-snippet-dirs
-      '("~/.emacs.d/snippets"))
+  :custom
+  (yas-snippet-dirs '("~/.emacs.d/snippets"))
   :init
   (yas-global-mode 1))
 
