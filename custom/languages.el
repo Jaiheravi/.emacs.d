@@ -9,6 +9,8 @@
       '((haskell . ("https://github.com/tree-sitter/tree-sitter-haskell" "v0.23.1"))))
 
 (use-package haskell-ts-mode
+  :custom
+  (haskell-ts-use-indent t)
   :vc (:url "git@github.com:Jaiheravi/haskell-ts-mode.git"
             :rev :newest))
 
@@ -43,3 +45,8 @@
   :defer t
   :config
   (setq geiser-chez-binary "chez"))
+
+;; --------------------------------------------------
+;; OCaml
+(add-to-list 'load-path "/Users/jaime/.opam/default/share/emacs/site-lisp")
+(require 'ocp-indent)

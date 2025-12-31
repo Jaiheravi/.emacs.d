@@ -1,4 +1,5 @@
 ;;; -*- lexical-binding: t -*-
+;; -*-no-byte-compile: t; -*-
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -15,7 +16,6 @@
         spell-fu
         lsp-mode
         geiser-chez
-        latex-preview-pane
         yasnippet
         expand-region
         multiple-cursors))
@@ -34,6 +34,27 @@
 (load "functions")
 
 ;; TODO: Check out Combobulate
+
+
+;; --------------------------------------------------
+;; LaTeX
+
+(use-package auctex
+  :ensure t
+  :custom
+  (TeX-auto-save t)
+  (TeX-parse-self t)
+  :config
+  (setq-default TeX-master nil)
+  (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+  (add-hook 'LaTeX-mode-hook 'AUCTeX-mode t)
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex t)
+  ;; I use as little syntax highlighting as possible, but LaTeX is unusable without it
+  ;; Here I fix highlighting only for LaTeX modes.
+  (add-hook 'LaTeX-mode-hook
+            (lambda ()
+              (face-remap-add-relative 'font-lock-keyword-face :foreground rose-gold)
+              (font-lock-update))))
 
 ;; Select and edit multiple things at the same time
 (use-package multiple-cursors
@@ -137,7 +158,6 @@
 ;; Enable finding functions, variables, etc.
 ;; Without being precise in the spelling.
 (use-package orderless
-  :defer t
   :ensure t
   :custom
   (completion-styles '(orderless basic))
@@ -270,36 +290,6 @@
 (electric-pair-mode)
 
 ;; --------------------------------------------------
-;; GUI Settings
-;;
-;; I use the Emacs GUI when I write LaTex documents,
-;; so I need to clean things up for that. Everything
-;; else assumes use in the terminal.
-
-(if (display-graphic-p)
-    (progn
-      ;; No tool bar
-      (tool-bar-mode -1)
-
-      ;; No scroll bar
-      (scroll-bar-mode -1)
-
-      ;; Meta key
-      (setq mac-option-modifier 'meta)
-      (setq mac-right-option-modifier nil)
-
-      ;; Blend the fringe with the background
-      (set-face-attribute 'fringe nil
-                          :background rose-surface
-                          :foreground rose-overlay)
-      ;; Use "paper" color for the frames
-      ;; TODO: I should use a variable here but I didn't know how
-      (add-to-list 'default-frame-alist '(background-color . "#fffaf3"))
-      (set-face-attribute 'default nil
-                          :family "JetBrains Mono"
-                          :height 160)))
-
-;; --------------------------------------------------
 ;; Keybindings
 
 ;; Avoid the the mistake of calling "C-x C-b" instead of "C-x b"
@@ -394,7 +384,7 @@
 (set-face-attribute 'font-lock-builtin-face nil :foreground rose-text)
 (set-face-attribute 'font-lock-string-face nil
                     :slant 'italic
-                    :foreground rose-subtle)
+                    :foreground rose-muted)
 (set-face-attribute 'font-lock-number-face nil :foreground rose-subtle)
 (set-face-attribute 'font-lock-operator-face nil :foreground rose-subtle)
 (set-face-attribute 'font-lock-punctuation-face nil :foreground rose-subtle)
