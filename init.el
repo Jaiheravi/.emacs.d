@@ -18,7 +18,8 @@
         geiser-chez
         yasnippet
         expand-region
-        multiple-cursors))
+        multiple-cursors
+        visual-fill-column))
 
 ;; Install packages in this list with M-x package-vc-install-selected-packages
 (setq package-vc-selected-packages
@@ -35,24 +36,37 @@
 
 ;; TODO: Check out Combobulate
 
-
 ;; --------------------------------------------------
 ;; LaTeX
+
+;; Center text
+(use-package visual-fill-column
+  :ensure t
+  :custom
+  (visual-fill-column-center-text t)
+  :config
+  (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline))
 
 (use-package auctex
   :ensure t
   :custom
   (TeX-auto-save t)
   (TeX-parse-self t)
+  (fill-column 80)
   :config
   (setq-default TeX-master nil)
   (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
   (add-hook 'LaTeX-mode-hook 'AUCTeX-mode t)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex t)
-  ;; I use as little syntax highlighting as possible, but LaTeX is unusable without it
-  ;; Here I fix highlighting only for LaTeX modes.
   (add-hook 'LaTeX-mode-hook
             (lambda ()
+              (auto-fill-mode -1)
+              (visual-line-mode)
+              (whitespace-mode)
+              (set-face-attribute 'whitespace-space nil :background nil :foreground rose-gold :weight 'bold)
+              (set-face-attribute 'whitespace-line nil :background nil :foreground nil) ; We don't want this on LaTeX documents
+              ;; I use as little syntax highlighting as possible, but LaTeX is unusable without it
+              ;; Here I fix highlighting only for LaTeX modes.
               (face-remap-add-relative 'font-lock-keyword-face :foreground rose-gold)
               (font-lock-update))))
 
@@ -365,7 +379,7 @@
 (set-face-background 'region rose-highlight-low)
 (set-face-attribute 'isearch nil :background rose-overlay :foreground rose-love)
 (set-face-attribute 'lazy-highlight nil
-                    :background rose-base :foreground rose-love)
+                    :background rose-overlay :foreground rose-love)
 (set-face-attribute 'minibuffer-prompt nil
                     :foreground rose-rose :weight 'normal)
 (set-face-attribute 'highlight nil :background rose-overlay)
