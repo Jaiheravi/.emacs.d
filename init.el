@@ -6,6 +6,8 @@
 
 ;; Install packages in this list with M-x package-install-selected-packages
 ;; We only need to list the packages that are not bundled with Emacs
+;; I do this manually instead of relying on the automatic method of Emacs because
+;; I like to know what's being installed and make sure it's all intentional.
 (setq package-selected-packages
       '(olivetti
         denote
