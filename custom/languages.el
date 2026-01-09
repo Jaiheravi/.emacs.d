@@ -27,16 +27,17 @@
 ;; LSP itself
 (use-package lsp-mode
   :ensure t
+  :defer t
   :hook ((haskell-ts-mode . lsp-deferred)
-	       (lsp-mode . lsp-enable-which-key-integration))
+	       (lsp-mode . lsp-enable-which-key-integration)
+         (swift-mode . lsp))
   :commands lsp
-  :custom
-  (setq lsp-enabled-clients '(lsp-haskell))
+  ;;:custom
+  ;;(setq lsp-enabled-clients '(lsp-haskell))
   :config
   (setq lsp-lens-enable nil) ; A bit too intrusive
   (setq lsp-headerline-breadcrumb-enable nil)
-  (setq warning-suppress-types '((lsp-mode) (lsp-mode)))
-  :defer t)
+  (setq warning-suppress-types '((lsp-mode) (lsp-mode))))
 
 ;; --------------------------------------------------
 ;; Scheme (Chez Scheme)
@@ -50,3 +51,29 @@
 ;; OCaml
 (add-to-list 'load-path "/Users/jaime/.opam/default/share/emacs/site-lisp")
 (require 'ocp-indent)
+
+;; --------------------------------------------------
+;; Swift
+
+(defun custom/find-sourcekit-lsp () ; Locate sourcekit-lsp
+  (or (executable-find "sourcekit-lsp")
+      (and (eq system-type 'darwin)
+           (string-trim (shell-command-to-string "xcrun -f sourcekit-lsp")))
+      "/Library/Developer/CommandLineTools/usr/bin/sourcekit-lsp"))
+
+(use-package swift-mode
+  :ensure t
+  :defer t
+  :mode "\\.swift\\'"
+  :interpreter "swift")
+
+(use-package lsp-sourcekit
+  :ensure t
+  :after lsp-mode
+  :custom
+  (lsp-sourcekit-executable (custom/find-sourcekit-lsp) "Find sourcekit-lsp"))
+
+(use-package swift-helpful
+  :ensure t
+  :after lsp-mode
+  :bind ("C-c h" . swift-helpful))

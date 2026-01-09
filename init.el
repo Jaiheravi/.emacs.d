@@ -1,6 +1,5 @@
 ;;; -*- lexical-binding: t -*-
-;; -*-no-byte-compile: t; -*-
-
+;;; -*- no-byte-compile: t -*-
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
@@ -21,7 +20,10 @@
         yasnippet
         expand-region
         multiple-cursors
-        visual-fill-column))
+        visual-fill-column
+        swift-mode
+        lsp-sourcekit
+        swift-helpful))
 
 ;; Install packages in this list with M-x package-vc-install-selected-packages
 (setq package-vc-selected-packages
@@ -66,7 +68,9 @@
               (visual-line-mode)
               (whitespace-mode)
               (set-face-attribute 'whitespace-space nil :background nil :foreground rose-gold :weight 'bold)
-              (set-face-attribute 'whitespace-line nil :background nil :foreground nil) ; We don't want this on LaTeX documents
+              ;; We don't want highlighting long lines on LaTeX documents
+              ;; because every paragraph is a line.
+              (set-face-attribute 'whitespace-line nil :background nil :foreground nil)
               ;; I use as little syntax highlighting as possible, but LaTeX is unusable without it
               ;; Here I fix highlighting only for LaTeX modes.
               (face-remap-add-relative 'font-lock-keyword-face :foreground rose-gold)
