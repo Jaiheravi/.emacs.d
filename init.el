@@ -23,7 +23,8 @@
         visual-fill-column
         swift-mode
         lsp-sourcekit
-        swift-helpful))
+        swift-helpful
+        paren-face))
 
 ;; Install packages in this list with M-x package-vc-install-selected-packages
 (setq package-vc-selected-packages
@@ -37,6 +38,17 @@
 
 ;; Custom functions
 (load "functions")
+
+;; Add parentheses face everywhere
+(use-package paren-face
+  :ensure t
+  :hook (prog-mode . paren-face-mode)
+  :init
+  (global-paren-face-mode)
+  :config
+  (set-face-attribute 'parenthesis nil :foreground rose-highlight-high :weight 'bold)
+  (setq paren-face-modes '(prog-mode))
+  (setq paren-face-regexp "[][()}{]"))
 
 ;; TODO: Check out Combobulate
 
@@ -139,11 +151,14 @@
   (vundo-glyph-alist vundo-unicode-symbols))
 
 ;; Simultaneous editing of occurrences
+;; To avoid editing all instances, it's a good idea to combine with:
+;; C-x n n -> narrow-to-region
+;; C-x n w -> widen (restore full buffer view)
 (use-package iedit
   :ensure t
   :defer t
   :bind
-  ("C-c i" . iedit-mode)
+  ("C-c i" . iedit-rectangle-mode)
   :config
   (set-face-background 'iedit-occurrence rose-overlay))
 
@@ -393,20 +408,21 @@
 ;; Syntax highlighting
 (set-face-attribute 'font-lock-function-name-face nil :foreground rose-text)
 (set-face-attribute 'font-lock-function-call-face nil :foreground rose-text)
-(set-face-attribute 'font-lock-variable-name-face nil :foreground rose-text)
+(set-face-attribute 'font-lock-variable-name-face nil :foreground rose-text :slant 'italic)
 (set-face-attribute 'font-lock-variable-use-face nil :foreground rose-text)
-(set-face-attribute 'font-lock-keyword-face nil :foreground rose-text)
+(set-face-attribute 'font-lock-keyword-face nil :foreground rose-text :weight 'bold)
 (set-face-attribute 'font-lock-comment-face nil
                     :slant 'italic
                     :foreground rose-rose)
 (set-face-attribute 'font-lock-type-face nil :foreground rose-text)
 (set-face-attribute 'font-lock-constant-face nil :foreground rose-text)
-(set-face-attribute 'font-lock-builtin-face nil :foreground rose-text)
+(set-face-attribute 'font-lock-builtin-face nil :foreground rose-pine)
 (set-face-attribute 'font-lock-string-face nil
                     :slant 'italic
-                    :foreground rose-muted)
+                    :foreground rose-subtle)
 (set-face-attribute 'font-lock-number-face nil :foreground rose-subtle)
 (set-face-attribute 'font-lock-operator-face nil :foreground rose-subtle)
-(set-face-attribute 'font-lock-punctuation-face nil :foreground rose-subtle)
+(set-face-attribute 'font-lock-punctuation-face nil :foreground rose-muted)
 (set-face-attribute 'font-lock-bracket-face nil :foreground rose-muted)
 (set-face-attribute 'font-lock-delimiter-face nil :foreground rose-muted)
+(set-face-attribute 'font-lock-escape-face nil :foreground rose-rose)

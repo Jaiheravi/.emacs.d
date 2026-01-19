@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: tcl-bang
+# key: !
+# --
+#!/usr/bin/env tclsh
+
+$0
