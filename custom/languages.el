@@ -7,6 +7,7 @@
 (add-hook 'css-mode-hook '(lambda ()
   (setq indent-tabs-mode nil)
   (setq css-indent-offset 2)
+  (setq css-fontify-colors nil)
 ))
 
 ;; --------------------------------------------------

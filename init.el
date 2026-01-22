@@ -257,7 +257,7 @@
 (setq isearch-lazy-count t)
 
 ;; Delay inline suggestions by 2 seconds
-(setq completion-preview-idle-delay 2)
+(setq completion-preview-idle-delay 1)
 
 ;; ;; Never use tabs for indentation
 (setq-default indent-tabs-mode nil)
@@ -335,6 +335,10 @@
 
 ;; --------------------------------------------------
 ;; Keybindings
+
+;; Enlarge window vertically
+(define-key global-map (kbd "C-c ^") '("Enlarge window vertically" . enlarge-window))
+(define-key global-map (kbd "C-c >") '("Enlarge window horizontally" . enlarge-window-horizontally))
 
 ;; Avoid the the mistake of calling "C-x C-b" instead of "C-x b"
 (global-unset-key (kbd "C-x C-b"))
