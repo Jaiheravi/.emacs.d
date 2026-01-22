@@ -4,6 +4,11 @@
 
 (setq js-indent-level 2)
 
+(add-hook 'css-mode-hook '(lambda ()
+  (setq indent-tabs-mode nil)
+  (setq css-indent-offset 2)
+))
+
 ;; --------------------------------------------------
 ;; Tree-sitter Parsers
 ;; Run treesit-install-language-grammar

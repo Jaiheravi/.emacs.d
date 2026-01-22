@@ -24,7 +24,8 @@
         swift-mode
         lsp-sourcekit
         swift-helpful
-        paren-face))
+        paren-face
+        treemacs))
 
 ;; Install packages in this list with M-x package-vc-install-selected-packages
 (setq package-vc-selected-packages
@@ -33,11 +34,18 @@
 ;; All my custom code is inside the custom directory
 (add-to-list 'load-path "~/.emacs.d/custom")
 
+;; Global Variables
+(load "variables")
+
 ;; Color palette
 (load "colors")
 
 ;; Custom functions
 (load "functions")
+
+(use-package treemacs
+  :ensure t
+  :bind ("C-c t" . treemacs))
 
 ;; Add parentheses face everywhere
 (use-package paren-face
@@ -154,11 +162,12 @@
 ;; To avoid editing all instances, it's a good idea to combine with:
 ;; C-x n n -> narrow-to-region
 ;; C-x n w -> widen (restore full buffer view)
+(put 'narrow-to-region 'disabled nil) ; Enable narrow-to-region
 (use-package iedit
   :ensure t
   :defer t
   :bind
-  ("C-c i" . iedit-rectangle-mode)
+  ("C-c i" . iedit-mode)
   :config
   (set-face-background 'iedit-occurrence rose-overlay))
 
@@ -426,3 +435,5 @@
 (set-face-attribute 'font-lock-bracket-face nil :foreground rose-muted)
 (set-face-attribute 'font-lock-delimiter-face nil :foreground rose-muted)
 (set-face-attribute 'font-lock-escape-face nil :foreground rose-rose)
+(set-face-attribute 'treemacs-git-modified-face nil :foreground rose-pine :slant 'normal)
+(set-face-attribute 'treemacs-git-added-face nil :foreground rose-pine)
