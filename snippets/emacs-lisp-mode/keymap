@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: keybinding
-# key: keybinding
+# name: keymap
+# key: keymap
 # --
 
 (keymap-global-set (getkey "$1") '$1)$0
