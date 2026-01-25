@@ -15,6 +15,7 @@
 
 ;; Dedicated keybindings for modes
 (setq custom/mode-keybindings '(("hs-toggle-hiding" . "C-c f f")
+                                ("hs-hide-all" . "C-c f a")
                                 ("treemacs" . "C-c t")
                                 ("mc/mark-next-like-this" . "C-c m f")
                                 ("mc/mark-previous-like-this" . "C-c m b")
@@ -37,7 +38,7 @@
 ;; I didn't prefix the function like (custom/getkey) because I want it to be as
 ;; short as possible for readability.
 ;; When getting the keys we don't care if they are global or local, they are in
-;; different variables just to make things clear as a reference.
+;; different variables just to make things clear for myself as a reference.
 (defun getkey (function-name)
   "Get the custom keybinding for the function name"
   (or (assoc-default function-name custom/mode-keybindings)

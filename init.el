@@ -43,11 +43,16 @@
 ;; Custom functions
 (load "functions")
 
+;; Custom keybinding references
+;; I use this file as a reference to keep all custom keybindings organized,
+;; it's just a list of the keybindings with their functions.
+;; I still configure the keybindings on this file.
 (load "keybindings")
 
 (use-package hideshow
   :config
-  (keymap-global-set (getkey "hs-toggle-hiding") 'hs-toggle-hiding))
+  (keymap-global-set (getkey "hs-toggle-hiding") 'hs-toggle-hiding)
+  (keymap-global-set (getkey "hs-hide-all") 'hs-hide-all))
 
 (use-package treemacs
   :ensure t
