@@ -43,9 +43,18 @@
 ;; Custom functions
 (load "functions")
 
+(load "keybindings")
+
+(use-package hideshow
+  :config
+  (keymap-global-set (getkey "hs-toggle-hiding") 'hs-toggle-hiding))
+
 (use-package treemacs
   :ensure t
-  :bind ("C-c t" . treemacs))
+  :config
+  (keymap-global-set (getkey "treemacs") 'treemacs)
+  (set-face-attribute 'treemacs-git-modified-face nil :foreground rose-pine :slant 'normal)
+  (set-face-attribute 'treemacs-git-added-face nil :foreground rose-pine))
 
 ;; Add parentheses face everywhere
 (use-package paren-face
@@ -100,9 +109,9 @@
 (use-package multiple-cursors
   :ensure t
   :config
-  (global-set-key (kbd "C-c f") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-c b") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "C-c C-SPC") 'mc/mark-all-like-this))
+  (keymap-global-set (getkey "mc/mark-next-like-this") 'mc/mark-next-like-this)
+  (keymap-global-set (getkey "mc/mark-previous-like-this") 'mc/mark-previous-like-this)
+  (keymap-global-set (getkey "mc/mark-all-like-this") 'mc/mark-all-like-this))
 
 ;; Version Control
 (use-package magit
@@ -132,7 +141,7 @@
 (use-package expand-region
   :ensure t
   :config
-  (global-set-key (kbd "C-c SPC") 'er/expand-region))
+  (keymap-global-set (getkey "er/expand-region") 'er/expand-region))
 
 (use-package dired
   :custom
@@ -154,7 +163,8 @@
 ;; Display the undo tree
 (use-package vundo
   :ensure t
-  :bind ("C-x u" . vundo)
+  :config
+  (keymap-global-set (getkey "vundo") 'vundo)
   :custom
   (vundo-glyph-alist vundo-unicode-symbols))
 
@@ -166,9 +176,8 @@
 (use-package iedit
   :ensure t
   :defer t
-  :bind
-  ("C-c i" . iedit-mode)
   :config
+  (keymap-global-set (getkey "iedit-mode") 'iedit-mode)
   (set-face-background 'iedit-occurrence rose-overlay))
 
 ;; Show what functions are available on M-x
@@ -249,9 +258,12 @@
 ;; --------------------------------------------------
 ;; General settings
 
+;; Automatically wrap comments
+(setq comment-auto-fill-only-comments t)
+(add-hook 'prog-mode-hook 'turn-on-auto-fill)
+
 ;; Dictionary
 (setq dictionary-server "dict.org")
-(global-set-key (kbd "C-c l") #'dictionary-lookup-definition)
 
 ;; How total number of matches when searching
 (setq isearch-lazy-count t)
@@ -334,31 +346,6 @@
 (electric-pair-mode)
 
 ;; --------------------------------------------------
-;; Keybindings
-
-;; Enlarge window vertically
-(define-key global-map (kbd "C-c ^") '("Enlarge window vertically" . enlarge-window))
-(define-key global-map (kbd "C-c >") '("Enlarge window horizontally" . enlarge-window-horizontally))
-
-;; Avoid the the mistake of calling "C-x C-b" instead of "C-x b"
-(global-unset-key (kbd "C-x C-b"))
-
-;; Redefine core keybindings
-(define-key global-map (kbd "C-a")
-            '("Go to beginning of line" . custom/beginning-of-line))
-
-;; Clipboard keybindings
-(define-key global-map (kbd "C-c c")
-            '("Copy to clipboard" . custom/copy-to-clipboard))
-(define-key global-map (kbd "C-c v")
-            '("Paste from clipboard" . custom/paste-from-clipboard))
-
-;; Other
-(define-key global-map (kbd "C-c d")
-            '("Duplicate line" . custom/duplicate-line))
-(define-key global-map (kbd "C-x C-r") '("Open recent file" . recentf-open))
-
-;; --------------------------------------------------
 ;; Color customization
 
 ;; ANSI Colors
@@ -439,5 +426,3 @@
 (set-face-attribute 'font-lock-bracket-face nil :foreground rose-muted)
 (set-face-attribute 'font-lock-delimiter-face nil :foreground rose-muted)
 (set-face-attribute 'font-lock-escape-face nil :foreground rose-rose)
-(set-face-attribute 'treemacs-git-modified-face nil :foreground rose-pine :slant 'normal)
-(set-face-attribute 'treemacs-git-added-face nil :foreground rose-pine)

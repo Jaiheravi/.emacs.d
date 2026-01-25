@@ -87,7 +87,9 @@
   :ensure t
   :defer t
   :mode "\\.swift\\'"
-  :interpreter "swift")
+  :interpreter "swift"
+  :config
+  (setq swift-mode:basic-offset 2))
 
 (use-package lsp-sourcekit
   :ensure t
