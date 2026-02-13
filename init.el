@@ -1,5 +1,4 @@
 ;;; -*- lexical-binding: t -*-
-;;; -*- no-byte-compile: t -*-
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
@@ -27,7 +26,8 @@
         paren-face
         treemacs
         delight
-        helpful))
+        helpful
+        breadcrumb))
 
 ;; Install packages in this list with M-x package-vc-install-selected-packages
 (setq package-vc-selected-packages
@@ -50,6 +50,9 @@
 ;; it's just a list of the keybindings with their functions.
 ;; I still configure the keybindings on this file.
 (load "keybindings")
+
+(use-package breadcrumb
+  :ensure t)
 
 (use-package helpful
   :ensure t
@@ -101,6 +104,7 @@
 ;; Center text
 (use-package visual-fill-column
   :ensure t
+  :defer t
   :custom
   (visual-fill-column-center-text t)
   :config
@@ -111,6 +115,7 @@
 
 (use-package auctex
   :ensure t
+  :defer t
   :custom
   (TeX-auto-save t)
   (TeX-parse-self t)
@@ -181,13 +186,9 @@
 
 ;; A better experience for writing text
 (use-package olivetti
-  :hook org-mode)
-
-;; Automatically create better file names for my Notebook
-(use-package denote
+  :ensure t
   :defer t
-  :config
-  (setq denote-directory (expand-file-name "~/Developer/Notebook")))
+  :hook org-mode)
 
 ;; Display the undo tree
 (use-package vundo
