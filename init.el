@@ -260,7 +260,7 @@
   :ensure t
   :custom
   (flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc))
-  (flycheck-mode-line-prefix "FC")
+  (flycheck-mode-line-prefix " FC")
   :init
   (global-flycheck-mode)
   :config
@@ -272,11 +272,11 @@
                           (warnings (or (cdr (assq 'warning counts)) 0))
                           (infos (or (cdr (assq 'info counts)) 0)))
                      (format " E:%d W:%d I:%d " errors warnings infos)))
-                  (`running "FC:running")
-                  (`no-checker "FC:off")
-                  (`not-checked "FC:?")
-                  (`errored "FC:err")
-                  (`interrupted "FC:stopped")))))
+                  (`running " FC:running")
+                  (`no-checker " FC:off")
+                  (`not-checked " FC:?")
+                  (`errored " FC:err")
+                  (`interrupted " FC:stopped")))))
 
 ;; Spell check for natural language
 ;; Requires Aspell
