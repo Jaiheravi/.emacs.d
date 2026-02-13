@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: type-fun
+# key: type-fun
+# --
+/** @type {(${1:arg}: ${2:argType}) => ${3:returnType}} */

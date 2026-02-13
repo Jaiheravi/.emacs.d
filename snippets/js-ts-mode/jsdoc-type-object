@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: type-object
+# key: type-object
+# --
+/**
+ * @typedef {Object} ${1:objectName}
+ * @property {${2:Type}} ${3:objectPropertyName}
+ */

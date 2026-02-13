@@ -20,8 +20,13 @@
 (setq treesit-language-source-alist
       '((html "https://github.com/tree-sitter/tree-sitter-html")
         (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-        (json "https://github.com/tree-sitter/tree-sitter-json")
-        (haskell "https://github.com/tree-sitter/haskell-tree-sitter")))
+        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+        (css "https://github.com/tree-sitter/tree-sitter-css")
+        (json "https://github.com/tree-sitter/tree-sitter-json")))
+
+;; Evaluate to install grammars
+;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 
 ;; (use-package haskell-ts-mode
 ;;   :custom
@@ -33,6 +38,10 @@
 (add-hook 'html-mode-hook #'html-ts-mode)
 (add-hook 'json-mode-hook #'json-ts-mode)
 (add-hook 'haskell-mode-hook #'haskell-ts-mode)
+
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.css\\'" . css-ts-mode))
 
 ;; --------------------------------------------------
 ;; Language Server Protocol
@@ -47,19 +56,24 @@
 ;; LSP itself
 (use-package lsp-mode
   :ensure t
+  ;;:delight (lsp-mode " LSP" lsp-lens-mode)
+  :delight (lsp-mode " LSP")
   :defer t
   :hook ((js-mode . lsp-deferred)
-         (typescript-mode . lsp-deferred)
+         (typescript-ts-mode . lsp-deferred)
+         (css-ts-mode . lsp-deferred)
          (haskell-ts-mode . lsp-deferred)
 	       (lsp-mode . lsp-enable-which-key-integration)
          (swift-mode . lsp))
   :commands lsp
-  ;;:custom
-  ;;(setq lsp-enabled-clients '(lsp-haskell))
   :config
-  (setq lsp-lens-enable nil) ; A bit too intrusive
+  ;;(setq lsp-lens-enable nil) ; A bit too intrusive
+  (setq lsp-modeline-diagnostics-enable nil)
+  (setq lsp-modeline-code-actions-enable nil)
+  (setq lsp-modeline-code-actions-segments '(count))  ; Show count only, no icon
   (setq lsp-headerline-breadcrumb-enable nil)
-  (setq warning-suppress-types '((lsp-mode) (lsp-mode))))
+  (setq warning-suppress-types '((lsp-mode) (lsp-mode)))
+  (setq lsp-eslint-enable nil))
 
 ;; --------------------------------------------------
 ;; Scheme (Chez Scheme)

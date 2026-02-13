@@ -25,7 +25,9 @@
         lsp-sourcekit
         swift-helpful
         paren-face
-        treemacs))
+        treemacs
+        delight
+        helpful))
 
 ;; Install packages in this list with M-x package-vc-install-selected-packages
 (setq package-vc-selected-packages
@@ -49,7 +51,26 @@
 ;; I still configure the keybindings on this file.
 (load "keybindings")
 
+(use-package helpful
+  :ensure t
+  :config
+  (keymap-global-set (getkey "helpful-callable") 'helpful-callable)
+  (keymap-global-set (getkey "helpful-variable") 'helpful-variable)
+  (keymap-global-set (getkey "helpful-key") 'helpful-key)
+  (keymap-global-set (getkey "helpful-command") 'helpful-command)
+  (keymap-global-set (getkey "helpful-at-point") 'helpful-at-point))
+
+(use-package delight
+  :ensure t)
+
+(use-package eldoc
+  :delight)
+
 (use-package hideshow
+  :ensure t
+  :delight (hs-minor-mode)
+  :hook
+  (prog-mode . hs-minor-mode)
   :config
   (keymap-global-set (getkey "hs-toggle-hiding") 'hs-toggle-hiding)
   (keymap-global-set (getkey "hs-hide-all") 'hs-hide-all))
@@ -84,6 +105,9 @@
   (visual-fill-column-center-text t)
   :config
   (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline))
+
+;; Remove the modeline indicator for auto-fill-mode
+(delight 'auto-fill-function nil "simple")
 
 (use-package auctex
   :ensure t
@@ -235,8 +259,23 @@
   :ensure t
   :custom
   (flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc))
+  (flycheck-mode-line-prefix "FC")
   :init
-  (global-flycheck-mode))
+  (global-flycheck-mode)
+  :config
+  (setq flycheck-mode-line
+        '(:eval (pcase flycheck-last-status-change
+                  (`finished
+                   (let* ((counts (flycheck-count-errors flycheck-current-errors))
+                          (errors (or (cdr (assq 'error counts)) 0))
+                          (warnings (or (cdr (assq 'warning counts)) 0))
+                          (infos (or (cdr (assq 'info counts)) 0)))
+                     (format " E:%d W:%d I:%d " errors warnings infos)))
+                  (`running "FC:running")
+                  (`no-checker "FC:off")
+                  (`not-checked "FC:?")
+                  (`errored "FC:err")
+                  (`interrupted "FC:stopped")))))
 
 ;; Spell check for natural language
 ;; Requires Aspell
@@ -253,6 +292,7 @@
 ;; Quickly insert bits of code
 (use-package yasnippet
   :ensure t
+  :delight (yas-minor-mode)
   :custom
   (yas-snippet-dirs '("~/.emacs.d/snippets"))
   :init
@@ -296,6 +336,8 @@
 
 ;; Show what keybindings are available after a prefix like C-x or C-c.
 (use-package which-key
+  :ensure t
+  :delight
   :config
   (setq which-key-separator " → "
         which-key-max-display-columns 1
@@ -343,7 +385,11 @@
 (setq column-number-mode t)
 
 ;; Enable auto-completion for code and text
-(global-completion-preview-mode)
+(use-package completion-preview
+  :delight
+  :init
+  (global-completion-preview-mode))
+
 
 ;; Match delimiters
 (setq electric-pair-preserve-balance t)
@@ -431,3 +477,4 @@
 (set-face-attribute 'font-lock-bracket-face nil :foreground rose-muted)
 (set-face-attribute 'font-lock-delimiter-face nil :foreground rose-muted)
 (set-face-attribute 'font-lock-escape-face nil :foreground rose-rose)
+(set-face-attribute 'flycheck-error nil :underline `(:style wave :color ,rose-highlight-med))
