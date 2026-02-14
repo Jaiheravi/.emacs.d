@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;; I need a way to know all the keybindings I'm defining so I don't make the
 ;; mistake of repeating them. Also as a reference to know all the keybindings
 ;; that I have defined. Also, some of these keybindings have "chained" letters

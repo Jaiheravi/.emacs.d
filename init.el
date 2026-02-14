@@ -27,7 +27,8 @@
         treemacs
         delight
         helpful
-        breadcrumb))
+        breadcrumb
+        git-gutter))
 
 ;; Install packages in this list with M-x package-vc-install-selected-packages
 (setq package-vc-selected-packages
@@ -50,6 +51,21 @@
 ;; it's just a list of the keybindings with their functions.
 ;; I still configure the keybindings on this file.
 (load "keybindings")
+
+(use-package git-gutter
+  :ensure t
+  :delight
+  :init
+  (global-git-gutter-mode +1)
+  :config
+  (set-face-background 'git-gutter:modified nil)
+  (set-face-foreground 'git-gutter:modified rose-highlight-high)
+  (set-face-foreground 'git-gutter:added rose-highlight-high)
+  (set-face-foreground 'git-gutter:deleted rose-highlight-high)
+  (custom-set-variables
+   '(git-gutter:modified-sign "∓")
+   '(git-gutter:added-sign "+")
+   '(git-gutter:deleted-sign "-")))
 
 (use-package breadcrumb
   :ensure t)

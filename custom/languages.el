@@ -1,10 +1,12 @@
+;;; -*- lexical-binding: t -*-
+
 (add-hook 'prog-mode-hook (lambda ()
   (setq indent-tabs-mode nil)
   (setq tab-width 2)))
 
 (setq js-indent-level 2)
 
-(add-hook 'css-mode-hook '(lambda ()
+(add-hook 'css-ts-mode-hook '(lambda ()
   (setq indent-tabs-mode nil)
   (setq css-indent-offset 2)
   (setq css-fontify-colors nil)
@@ -66,6 +68,8 @@
 	       (lsp-mode . lsp-enable-which-key-integration)
          (swift-mode . lsp))
   :commands lsp
+  :init
+  (setq lsp-css-color-decorations nil)
   :config
   ;;(setq lsp-lens-enable nil) ; A bit too intrusive
   (setq lsp-modeline-diagnostics-enable nil)

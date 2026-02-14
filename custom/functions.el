@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;; Duplicate line
 ;; Copied from https://github.com/rexim/dotfiles/blob/a590e0962f9c466977d12276e28c5832c05570c1/.emacs.rc/misc-rc.el#L113C1-L123C28
 (defun custom/duplicate-line ()

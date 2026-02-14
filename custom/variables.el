@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (setq custom/fontWeightNames '((100 . "Thin")
                         (200 . "ExtraLight")
                         (300 . "Light")
