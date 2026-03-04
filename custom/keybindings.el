@@ -33,7 +33,7 @@
 
 ;; Standalone global keybindings
 (setq custom/global-keybindings '(("recentf-open" . "C-x C-r")
-                                  ("comment-or-uncomment-region" . "C-c C-c")
+                                  ("comment-line" . "C-c /")
                                   ("dictionary-lockup-definition" . "C-c d")
                                   ("enlarge-window" . "C-c ^")
                                   ("enlarge-window-horizontally" . "C-c >")
@@ -55,8 +55,8 @@
 
 ;; Global keybindings
 (keymap-global-set (getkey "recentf-open") 'recentf-open)
-(keymap-global-set (getkey "comment-or-uncomment-region") 'comment-or-uncomment-region)
-(keymap-global-set (getkey "dictionary-lockup-definition") 'dictionary-lockup-definition)
+(keymap-global-set (getkey "comment-line") 'comment-line)
+(Keymap-Global-set (getkey "dictionary-lockup-definition") 'dictionary-lockup-definition)
 (keymap-global-set (getkey "enlarge-window") 'enlarge-window)
 (keymap-global-set (getkey "enlarge-window-horizontally") 'enlarge-window-horizontally)
 (keymap-global-set (getkey "custom/copy-to-clipboard") 'custom/copy-to-clipboard)

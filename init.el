@@ -1,5 +1,14 @@
 ;;; -*- lexical-binding: t -*-
 (require 'package)
+
+(add-to-list 'load-path "~/.emacs.d/packages") ;; Third-party packages
+(add-to-list 'load-path "~/.emacs.d/custom") ;; Custom code
+
+(load "variables") ;; Global Variables
+(load "colors") ;; Color palette
+(load "functions") ;; Custom functions
+(load "keybindings") ;; Keybindings reference (No keybindings set in there)
+
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 ;; Install packages in this list with M-x package-install-selected-packages
@@ -33,24 +42,6 @@
 ;; Install packages in this list with M-x package-vc-install-selected-packages
 (setq package-vc-selected-packages
    '((haskell-ts-mode :url "git@github.com:Jaiheravi/haskell-ts-mode.git")))
-
-;; All my custom code is inside the custom directory
-(add-to-list 'load-path "~/.emacs.d/custom")
-
-;; Global Variables
-(load "variables")
-
-;; Color palette
-(load "colors")
-
-;; Custom functions
-(load "functions")
-
-;; Custom keybinding references
-;; I use this file as a reference to keep all custom keybindings organized,
-;; it's just a list of the keybindings with their functions.
-;; I still configure the keybindings on this file.
-(load "keybindings")
 
 (use-package git-gutter
   :ensure t
@@ -112,7 +103,9 @@
   (setq paren-face-modes '(prog-mode))
   (setq paren-face-regexp "[][()}{]"))
 
-;; TODO: Check out Combobulate
+;; Remove whitespace modeline indicator
+(use-package whitespace
+  :delight whitespace-mode)
 
 ;; --------------------------------------------------
 ;; LaTeX
@@ -120,14 +113,12 @@
 ;; Center text
 (use-package visual-fill-column
   :ensure t
-  :defer t
+  :hook (visual-line-mode . visual-fill-column-for-vline)
   :custom
-  (visual-fill-column-center-text t)
-  :config
-  (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline))
+  (visual-fill-column-center-text t))
 
-;; Remove the modeline indicator for auto-fill-mode
-(delight 'auto-fill-function nil "simple")
+(use-package simple
+  :delight visual-line-mode)
 
 (use-package auctex
   :ensure t
@@ -138,7 +129,6 @@
   (fill-column 80)
   :config
   (setq-default TeX-master nil)
-  (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
   (add-hook 'LaTeX-mode-hook 'AUCTeX-mode t)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex t)
   (add-hook 'LaTeX-mode-hook
@@ -152,6 +142,27 @@
               (set-face-attribute 'whitespace-line nil :background nil :foreground nil)
               ;; I use as little syntax highlighting as possible, but LaTeX is unusable without it
               ;; Here I fix highlighting only for LaTeX modes.
+              (face-remap-add-relative 'font-lock-keyword-face :foreground rose-gold)
+              (font-lock-update))))
+
+(use-package markdown-mode
+  :defer t
+  :custom
+  (fill-column 80)
+  :init
+  (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline)
+  :config
+  (add-hook 'markdown-mode-hook
+            (lambda ()
+              (auto-fill-mode -1)
+              (visual-line-mode)
+              (whitespace-mode)
+              (set-face-attribute 'whitespace-space nil :background nil :foreground rose-gold :weight 'bold)
+              ;; We don't want highlighting long lines on LaTeX documents
+              ;; because every paragraph is a line.
+              (set-face-attribute 'whitespace-line nil :background nil :foreground nil)
+              ;; I use as little syntax highlighting as possible, but sometimes
+              ;; we ned to be able to visually parse text fast.
               (face-remap-add-relative 'font-lock-keyword-face :foreground rose-gold)
               (font-lock-update))))
 
@@ -198,7 +209,8 @@
   (dired-listing-switches "-alh")
   (dired-dwim-target t)
   :config
-  (set-face-foreground 'dired-directory flexoki-blue-700))
+  (set-face-foreground 'dired-directory flexoki-blue-700)
+  (add-hook 'dired-hook #'dired-hide-details-mode))
 
 ;; A better experience for writing text
 (use-package olivetti
@@ -495,3 +507,26 @@
 (set-face-attribute 'font-lock-delimiter-face nil :foreground rose-muted)
 (set-face-attribute 'font-lock-escape-face nil :foreground rose-rose)
 (set-face-attribute 'flycheck-error nil :underline `(:style wave :color ,rose-highlight-med))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(git-gutter:added-sign "+")
+ '(git-gutter:deleted-sign "-")
+ '(git-gutter:modified-sign "∓")
+ '(package-selected-packages
+   '(auto-fill auto-fill-mode breadcrumb delight denote expand-region flycheck
+               geiser-chez git-gutter haskell-ts-mode helpful iedit lsp-mode
+               lsp-sourcekit marginalia multiple-cursors olivetti paren-face
+               spell-fu swift-helpful swift-mode treemacs vertico
+               visual-fill-column yasnippet))
+ '(whitespace-display-mappings
+   '((space-mark 32 [183] [46]) (space-mark 160 [164] [95])
+     (newline-mark 10 [9671 10]) (tab-mark 9 [187 9] [92 9]))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

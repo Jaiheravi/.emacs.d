@@ -7,10 +7,11 @@
 (setq js-indent-level 2)
 
 (add-hook 'css-ts-mode-hook '(lambda ()
-  (setq indent-tabs-mode nil)
-  (setq css-indent-offset 2)
-  (setq css-fontify-colors nil)
-))
+                               (setq css-indent-offset 2)
+                               (setq css-ts-mode-indent-offset 2)
+                               (setq indent-tabs-mode nil)
+                               (setq tab-width 2)
+                               (setq css-fontify-colors nil)))
 
 ;; --------------------------------------------------
 ;; Tree-sitter Parsers
@@ -37,13 +38,14 @@
 ;;             :rev :newest))
 
 (add-hook 'js-mode-hook #'js-ts-mode)
-(add-hook 'html-mode-hook #'html-ts-mode)
+;;(add-hook 'html-mode-hook #'html-ts-mode)
 (add-hook 'json-mode-hook #'json-ts-mode)
 (add-hook 'haskell-mode-hook #'haskell-ts-mode)
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\'" . css-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\'" . html-ts-mode))
 
 ;; --------------------------------------------------
 ;; Language Server Protocol
@@ -64,6 +66,7 @@
   :hook ((js-mode . lsp-deferred)
          (typescript-ts-mode . lsp-deferred)
          (css-ts-mode . lsp-deferred)
+         (html-ts-mode . lsp-deferred)
          (haskell-ts-mode . lsp-deferred)
 	       (lsp-mode . lsp-enable-which-key-integration)
          (swift-mode . lsp))
