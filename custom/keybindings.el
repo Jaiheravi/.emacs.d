@@ -56,7 +56,7 @@
 ;; Global keybindings
 (keymap-global-set (getkey "recentf-open") 'recentf-open)
 (keymap-global-set (getkey "comment-line") 'comment-line)
-(Keymap-Global-set (getkey "dictionary-lockup-definition") 'dictionary-lockup-definition)
+(keymap-global-set (getkey "dictionary-lockup-definition") 'dictionary-lockup-definition)
 (keymap-global-set (getkey "enlarge-window") 'enlarge-window)
 (keymap-global-set (getkey "enlarge-window-horizontally") 'enlarge-window-horizontally)
 (keymap-global-set (getkey "custom/copy-to-clipboard") 'custom/copy-to-clipboard)
